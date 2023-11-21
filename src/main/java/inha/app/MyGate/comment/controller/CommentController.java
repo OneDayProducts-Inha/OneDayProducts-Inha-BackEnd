@@ -1,4 +1,4 @@
-package inha.app.MyGate.controller;
+package inha.app.MyGate.comment.controller;
 
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;

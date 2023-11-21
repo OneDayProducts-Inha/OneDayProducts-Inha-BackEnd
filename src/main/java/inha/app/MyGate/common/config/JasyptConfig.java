@@ -1,4 +1,4 @@
-package inha.app.MyGate.config;
+package inha.app.MyGate.common.config;
 
 
 

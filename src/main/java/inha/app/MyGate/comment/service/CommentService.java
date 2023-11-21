@@ -1,9 +1,9 @@
-package inha.app.MyGate.service;
+package inha.app.MyGate.comment.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
-public class UserService {
+public class CommentService {
 }

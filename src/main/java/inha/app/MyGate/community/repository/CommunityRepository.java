@@ -1,6 +1,6 @@
-package inha.app.MyGate.repository;
+package inha.app.MyGate.community.repository;
 
-import inha.app.MyGate.model.Community;
+import inha.app.MyGate.community.entity.Community;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

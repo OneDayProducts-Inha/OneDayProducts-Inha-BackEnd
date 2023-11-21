@@ -1,7 +1,7 @@
-package inha.app.MyGate.model;
+package inha.app.MyGate.user.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import inha.app.MyGate.comment.entity.Comment;
+import inha.app.MyGate.community.entity.Community;
 import lombok.*;
 
 import javax.persistence.*;

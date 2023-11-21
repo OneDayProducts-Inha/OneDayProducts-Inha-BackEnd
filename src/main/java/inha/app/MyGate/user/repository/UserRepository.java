@@ -1,6 +1,6 @@
-package inha.app.MyGate.repository;
+package inha.app.MyGate.user.repository;
 
-import inha.app.MyGate.model.User;
+import inha.app.MyGate.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
