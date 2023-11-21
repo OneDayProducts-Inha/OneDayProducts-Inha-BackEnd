@@ -21,8 +21,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.Arrays;
 import java.util.Collections;
 
-@Configuration	// 스프링 실행시 설정파일 읽어드리기 위한 어노테이션
-@EnableSwagger2	// Swagger2를 사용하겠다는 어노테이션
+@Configuration
+@EnableSwagger2
 public class SwaggerConfig extends WebMvcConfigurationSupport {
     private ApiInfo apiInfo() {
         return new ApiInfo(
@@ -36,7 +36,6 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 Collections.emptyList());
     }
 
-    //리소스 핸들러 설
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
@@ -45,7 +44,6 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
     }
 
 
-    // API마다 구분짓기 위한 설정.
     @Bean
     public Docket productApi() {
         return getDocket("유저", Predicates.or(
