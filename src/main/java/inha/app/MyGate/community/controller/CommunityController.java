@@ -2,6 +2,7 @@ package inha.app.MyGate.community.controller;
 
 import inha.app.MyGate.common.Exception.BaseResponse;
 import inha.app.MyGate.community.dto.request.PostReq;
+import inha.app.MyGate.community.dto.response.PostRes;
 import inha.app.MyGate.community.service.CommunityService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,8 @@ public class CommunityController {
     @PostMapping("/post")
     public BaseResponse<String> createPost(@RequestBody PostReq postReq){
         try{
-            String title = communityService.createPost(postReq);
-            System.out.println(title);
+            PostRes postRes = communityService.createPost(postReq);
+            System.out.println(postRes.toString());
             return new BaseResponse<>(SUCCESS);
         }catch (Exception e){
             return new BaseResponse<>(e.getMessage());
