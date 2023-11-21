@@ -1,6 +1,7 @@
 package inha.app.MyGate.community.entity;
 
 import inha.app.MyGate.comment.entity.Comment;
+import inha.app.MyGate.common.entity.BaseEntity;
 import inha.app.MyGate.user.entity.User;
 import lombok.*;
 
@@ -8,17 +9,12 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Data
-@Table(name = "Community")
 @Entity
 @Getter
-@Setter
-public class Community {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Community extends BaseEntity {
     @Id
-    @Column(name = "communityId")
+    @Column(name = "community_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long communityId;
     private String title;
@@ -32,6 +28,6 @@ public class Community {
     private List<Comment> comments;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
 }
