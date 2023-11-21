@@ -8,6 +8,9 @@ import inha.app.MyGate.user.dto.response.SignUpResponse;
 import inha.app.MyGate.user.dto.response.UserInfoResponse;
 import inha.app.MyGate.user.service.UserService;
 import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +31,10 @@ public class UserController {
     }
 
     // 사용자 정보 조회
+    @Operation(summary = "사용자 정보 조회 - 장채은", description = "사용자 정보를 조회한다. ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다.\n (2010)유저 아이디 값을 확인해주세요."),
+    })
     @GetMapping("/mypage")
     public BaseResponse<UserInfoResponse> getUserInfo() {
         try{
@@ -39,6 +46,10 @@ public class UserController {
     }
 
     // 사용자 정보 수정
+    @Operation(summary = "사용자 정보 수정 - 장채은", description = "사용자 정보를 수정한다. ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다.\n (2010)유저 아이디 값을 확인해주세요."),
+    })
     @PostMapping("/mypage")
     public BaseResponse<Void> updateUserInfo(@RequestBody UserInfoRequest request) {
         try{

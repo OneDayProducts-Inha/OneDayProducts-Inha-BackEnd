@@ -1,20 +1,23 @@
 package inha.app.MyGate.common.config;
 
+import inha.app.MyGate.common.Exception.BaseResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import com.fasterxml.classmate.TypeResolver;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 
 @Configuration
-@EnableSwagger2
-public class SwaggerConfig extends WebMvcConfigurationSupport {
+public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("MyGate API 명세서")
@@ -23,27 +26,21 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 .build();
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
-        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
-
-    @Bean
-    public Docket allApi() {
-        return getDocket("전체");
-    }
-
     //swagger 설정.
-    public Docket getDocket(String groupName) {
+    @Bean
+    public Docket getDocket(TypeResolver typeResolver) {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName(groupName)
+                .additionalModels(
+                        typeResolver.resolve(BaseResponse.class)
+                )
+                .directModelSubstitute(LocalDateTime.class, String.class)
+                .directModelSubstitute(LocalDate.class, String.class)
+                .directModelSubstitute(LocalTime.class, String.class)
+                .directModelSubstitute(ZonedDateTime.class, String.class)
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
-                .apis(RequestHandlerSelectors.any())
                 .build();
     }
 
