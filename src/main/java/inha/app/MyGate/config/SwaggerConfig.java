@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -25,15 +26,11 @@ import java.util.Collections;
 @EnableSwagger2
 public class SwaggerConfig extends WebMvcConfigurationSupport {
     private ApiInfo apiInfo() {
-        return new ApiInfo(
-                "MyGate API 명세서",
-                "MyGate API 명세서",
-                "1.0",
-                "Terms of service",
-                new Contact("Sallo Szrajbman", "www.baeldung.com", "salloszraj@gmail.com"),
-                "License of API",
-                "API license URL",
-                Collections.emptyList());
+        return new ApiInfoBuilder()
+                .title("MyGate API 명세서")
+                .version("1.0")
+                .description("MyGate API 명세서")
+                .build();
     }
 
     @Override
@@ -43,44 +40,20 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
-
-    @Bean
-    public Docket productApi() {
-        return getDocket("유저", Predicates.or(
-                PathSelectors.regex("/user.*")));
-    }
-
-    @Bean
-    public Docket commApi() {
-        return getDocket("커뮤니티", Predicates.or(
-                PathSelectors.regex("/community.*")));
-
-    }
-
     @Bean
     public Docket allApi() {
-        return getDocket("전체", Predicates.or(
-                PathSelectors.regex("/*.*")));
+        return getDocket("전체");
     }
 
     //swagger 설정.
-    public Docket getDocket(String groupName, Predicate<String> predicate) {
+    public Docket getDocket(String groupName) {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName(groupName)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.cc.kr"))
-                .paths(predicate)
                 .apis(RequestHandlerSelectors.any())
-                .build();
-    }
-
-    //swagger ui 설정.
-    @Bean
-    public UiConfiguration uiConfig() {
-        return UiConfigurationBuilder.builder()
-                .displayRequestDuration(true)
-                .validatorUrl("")
+                .paths(PathSelectors.any())
+                .apis(RequestHandlerSelectors.any())
                 .build();
     }
 
