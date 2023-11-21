@@ -36,6 +36,14 @@ public class CommunityService {
         Community community = communityRepository.findByCommunityIdAndStatus(communityId, true).orElseThrow(() -> new BaseException(COMMUNITY_NOT_FOUND));
         commentRepository.save(Comment.toEntity(request.getComment(), user, community));
     }
+
+    // todo : groupby 해결 필요
+    public List<CommunityResponse> gerMyComment(Long userId) throws BaseException {
+        User user = userRepository.findByUserIdAndStatus(userId, true).orElseThrow(() -> new BaseException(USER_NOT_FOUND));
+        return commentRepository.findByUserAndStatus(user, true)
+                .stream().map(CommunityResponse::toDto).collect(Collectors.toList());
+    }
+
     public List<CommunityResponse> getMyCommunity(Long userId) throws BaseException {
         User user = userRepository.findByUserIdAndStatus(userId, true).orElseThrow(() -> new BaseException(USER_NOT_FOUND));
         return communityRepository.findByUserAndStatus(user, true)
@@ -49,4 +57,6 @@ public class CommunityService {
 
         return new PostRes(community.getTitle(), community.getContent(), community.getCategory());
     }
+
+
 }

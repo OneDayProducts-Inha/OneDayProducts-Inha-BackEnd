@@ -1,5 +1,6 @@
 package inha.app.MyGate.community.dto.response;
 
+import inha.app.MyGate.community.entity.Comment;
 import inha.app.MyGate.community.entity.Community;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,15 @@ public class CommunityResponse {
                 .title(community.getTitle())
                 .content(community.getContent())
                 .category(community.getCategory())
+                .build();
+    }
+
+    public static CommunityResponse toDto(Comment comment){
+        return CommunityResponse.builder()
+                .communityId(comment.getCommunity().getCommunityId())
+                .title(comment.getCommunity().getTitle())
+                .content(comment.getCommunity().getContent())
+                .category(comment.getCommunity().getCategory())
                 .build();
     }
 }

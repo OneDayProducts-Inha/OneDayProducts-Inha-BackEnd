@@ -43,6 +43,21 @@ public class CommunityController {
             return new BaseResponse<>(e.getStatus());
         }
     }
+
+    @Operation(summary = "사용자 작성 댓글 - 장채은", description = "사용자가 작성한 댓글을 확인한다. ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다."),
+    })
+    @PostMapping("/mycomment")
+    public BaseResponse<List<CommunityResponse>> gerMyComment() {
+        try{
+            Long userId = 1L;
+            return new BaseResponse<>(communityService.gerMyComment(userId));
+        }catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
     @Operation(summary = "커뮤니티 댓글 - 장채은", description = "커뮤니티 댓글을 생성한다. ")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다.\n (2014)유저를 찾을 수 없습니다. \n(2019)댓글을 입력해주세요. \n (2020)커뮤니티 글을 찾을 수 없습니다."),
