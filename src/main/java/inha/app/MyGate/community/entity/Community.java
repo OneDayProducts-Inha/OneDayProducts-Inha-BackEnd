@@ -1,6 +1,5 @@
 package inha.app.MyGate.community.entity;
 
-import inha.app.MyGate.comment.entity.Comment;
 import inha.app.MyGate.common.entity.BaseEntity;
 import inha.app.MyGate.user.entity.User;
 import lombok.*;

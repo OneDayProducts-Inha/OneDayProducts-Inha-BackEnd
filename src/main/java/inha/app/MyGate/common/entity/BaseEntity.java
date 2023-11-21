@@ -7,6 +7,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -23,4 +25,16 @@ public class BaseEntity {
 
     @LastModifiedDate
     private LocalDateTime updated_at;
+
+    @PrePersist
+    public void prePersist() {
+        LocalDateTime now = LocalDateTime.now();
+        created_at = now;
+        updated_at = now;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updated_at = LocalDateTime.now();
+    }
 }

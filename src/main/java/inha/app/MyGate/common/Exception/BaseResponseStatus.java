@@ -16,11 +16,14 @@ public enum BaseResponseStatus {
     POST_USERS_EMPTY_EMAIL(false, 2015, "이메일을 입력해주세요."),
     POST_USERS_INVALID_EMAIL(false, 2016, "이메일 형식을 확인해주세요."),
     POST_USERS_EXISTS_EMAIL(false, 2017, "중복된 이메일입니다."),
+    POST_BOARDS_EMPTY_TITLE(false, 2018, "제목은 두 글자 이상으로 작성해주세요."),
+    POST_EMPTY_COMMENT(false, 2019, "댓글을 입력해주세요."),
+    COMMUNITY_NOT_FOUND(false, 2020, "커뮤니티 글을 찾을 수 없습니다."),
 
     POST_USERS_EMPTY_PW(false, 2030, "비밀버호를 입력해주세요."),
     POST_USERS_INVALID_PW(false, 2031, "비밀번호를 확인해주세요."),
 
-    POST_BOARDS_EMPTY_TITLE(false, 2018, "제목은 두 글자 이상으로 작성해주세요."),
+
     RESPONSE_ERROR(false, 3000, "값을 불러오는데 실패하였습니다."),
     DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
     FAILED_TO_LOGIN(false, 3014, "없는 아이디거나 비밀번호가 틀렸습니다."),
