@@ -28,7 +28,7 @@ public class CommunityController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다.\n (2014)유저를 찾을 수 없습니다. \n(2019)댓글을 입력해주세요. \n (2020)커뮤니티 글을 찾을 수 없습니다."),
     })
-    @PostMapping("/{communityId}")
+    @PostMapping("/comment/{communityId}")
     public BaseResponse<Void> postComment(@Parameter(description = "(Long) 커뮤니티 id", example = "1") @PathVariable(name = "communityId") Long communityId,
                                           @RequestBody CommentRequest request) {
         try{
