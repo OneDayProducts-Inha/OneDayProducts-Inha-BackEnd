@@ -33,7 +33,7 @@ public class UserController {
     // 사용자 정보 조회
     @Operation(summary = "사용자 정보 조회 - 장채은", description = "사용자 정보를 조회한다. ")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다.\n (2010)유저 아이디 값을 확인해주세요."),
+            @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다.\n (2014)유저를 찾을 수 없습니다."),
     })
     @GetMapping("/mypage")
     public BaseResponse<UserInfoResponse> getUserInfo() {
@@ -48,7 +48,7 @@ public class UserController {
     // 사용자 정보 수정
     @Operation(summary = "사용자 정보 수정 - 장채은", description = "사용자 정보를 수정한다. ")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다.\n (2010)유저 아이디 값을 확인해주세요."),
+            @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다.\n (2014)유저를 찾을 수 없습니다."),
     })
     @PostMapping("/mypage")
     public BaseResponse<Void> updateUserInfo(@RequestBody UserInfoRequest request) {

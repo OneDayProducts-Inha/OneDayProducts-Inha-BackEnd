@@ -1,14 +1,10 @@
 package inha.app.MyGate.user.entity;
 
-import inha.app.MyGate.comment.entity.Comment;
 import inha.app.MyGate.common.entity.BaseEntity;
-import inha.app.MyGate.community.entity.Community;
 import inha.app.MyGate.user.dto.request.UserInfoRequest;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter

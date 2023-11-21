@@ -22,9 +22,6 @@ public class PostReq {
                 .title(title)
                 .content(content)
                 .category(category)
-                .created_at(LocalDateTime.now())
-                .updated_at(LocalDateTime.now())
-                .status(true)
                 .build();
         return communityEntity;
     }
