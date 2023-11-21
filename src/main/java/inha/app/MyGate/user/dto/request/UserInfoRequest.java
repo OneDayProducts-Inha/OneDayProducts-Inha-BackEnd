@@ -3,12 +3,12 @@ package inha.app.MyGate.user.dto.request;
 import inha.app.MyGate.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-public class SignUpRequest {
+@NoArgsConstructor
+public class UserInfoRequest {
     private String name;
     private String pw;
     private String phoneNum;

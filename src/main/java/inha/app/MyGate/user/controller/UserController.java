@@ -2,12 +2,12 @@ package inha.app.MyGate.user.controller;
 
 import inha.app.MyGate.common.Exception.BaseException;
 import inha.app.MyGate.common.Exception.BaseResponse;
-import inha.app.MyGate.user.dto.request.SignUpRequest;
+import inha.app.MyGate.common.Exception.BaseResponseStatus;
+import inha.app.MyGate.user.dto.request.UserInfoRequest;
 import inha.app.MyGate.user.dto.response.SignUpResponse;
 import inha.app.MyGate.user.dto.response.UserInfoResponse;
 import inha.app.MyGate.user.service.UserService;
 import io.swagger.annotations.Api;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +22,7 @@ public class UserController {
 
     // 회원가입
     @PostMapping("/sign-up")
-    public BaseResponse<SignUpResponse> createUser(@RequestBody SignUpRequest request) throws BaseException {
+    public BaseResponse<SignUpResponse> createUser(@RequestBody UserInfoRequest request) throws BaseException {
         SignUpResponse res = userService.createUser(request);
         return new BaseResponse<>(res);
     }
@@ -39,5 +39,15 @@ public class UserController {
     }
 
     // 사용자 정보 수정
+    @PostMapping("/mypage")
+    public BaseResponse<Void> updateUserInfo(@RequestBody UserInfoRequest request) {
+        try{
+            Long userId = 1L;
+            userService.updateUserInfo(userId, request);
+            return new BaseResponse<>(BaseResponseStatus.SUCCESS);
+        }catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
 
 }

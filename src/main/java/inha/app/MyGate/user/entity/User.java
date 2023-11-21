@@ -3,6 +3,7 @@ package inha.app.MyGate.user.entity;
 import inha.app.MyGate.comment.entity.Comment;
 import inha.app.MyGate.common.entity.BaseEntity;
 import inha.app.MyGate.community.entity.Community;
+import inha.app.MyGate.user.dto.request.UserInfoRequest;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,5 +33,11 @@ public class User extends BaseEntity {
         this.name = name;
         this.phone_num = phone_num;
         this.pw = pw;
+    }
+
+    public void updateUser(UserInfoRequest request) {
+        if (!request.getPhoneNum().equals(phone_num)) phone_num = request.getPhoneNum();
+        if (!request.getName().equals(name)) phone_num = request.getPhoneNum();
+        if (!request.getPhoneNum().equals(pw)) phone_num = request.getPhoneNum();
     }
 }
