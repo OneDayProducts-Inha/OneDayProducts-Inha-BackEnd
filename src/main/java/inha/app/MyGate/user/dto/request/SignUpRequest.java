@@ -18,10 +18,6 @@ public class SignUpRequest {
                 .name(name)
                 .phone_num(phoneNum)
                 .pw(pw)
-                .created_at(LocalDateTime.now())
-                .updated_at(LocalDateTime.now())
-                .status(true)
                 .build();
-
     }
 }

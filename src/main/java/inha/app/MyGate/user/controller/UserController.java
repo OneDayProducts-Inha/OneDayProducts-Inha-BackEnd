@@ -4,20 +4,19 @@ import inha.app.MyGate.common.Exception.BaseException;
 import inha.app.MyGate.common.Exception.BaseResponse;
 import inha.app.MyGate.user.dto.request.SignUpRequest;
 import inha.app.MyGate.user.dto.response.SignUpResponse;
+import inha.app.MyGate.user.dto.response.UserInfoResponse;
 import inha.app.MyGate.user.service.UserService;
 import io.swagger.annotations.Api;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "유저", value = "회원 정보 관리 기능 구현한 User Controller 입니다.")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
@@ -27,4 +26,18 @@ public class UserController {
         SignUpResponse res = userService.createUser(request);
         return new BaseResponse<>(res);
     }
+
+    // 사용자 정보 조회
+    @GetMapping("/mypage")
+    public BaseResponse<UserInfoResponse> getUserInfo() {
+        try{
+            Long userId = 1L;
+            return new BaseResponse<>(userService.getUserInfo(userId));
+        }catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    // 사용자 정보 수정
+
 }
