@@ -3,6 +3,7 @@ package inha.app.MyGate.community.service;
 import inha.app.MyGate.common.Exception.BaseException;
 import inha.app.MyGate.community.dto.request.CommentRequest;
 import inha.app.MyGate.community.dto.request.PostReq;
+import inha.app.MyGate.community.dto.response.CommunityResponse;
 import inha.app.MyGate.community.dto.response.PostRes;
 import inha.app.MyGate.community.entity.Comment;
 import inha.app.MyGate.community.entity.Community;
@@ -14,6 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static inha.app.MyGate.common.Exception.BaseResponseStatus.*;
 
@@ -33,6 +37,19 @@ public class CommunityService {
         commentRepository.save(Comment.toEntity(request.getComment(), user, community));
     }
 
+    // todo : groupby 해결 필요
+    public List<CommunityResponse> gerMyComment(Long userId) throws BaseException {
+        User user = userRepository.findByUserIdAndStatus(userId, true).orElseThrow(() -> new BaseException(USER_NOT_FOUND));
+        return commentRepository.findByUserAndStatus(user, true)
+                .stream().map(CommunityResponse::toDto).collect(Collectors.toList());
+    }
+
+    public List<CommunityResponse> getMyCommunity(Long userId) throws BaseException {
+        User user = userRepository.findByUserIdAndStatus(userId, true).orElseThrow(() -> new BaseException(USER_NOT_FOUND));
+        return communityRepository.findByUserAndStatus(user, true)
+                .stream().map(CommunityResponse::toDto).collect(Collectors.toList());
+    }
+
 
     @Transactional
     public PostRes createPost(PostReq postReq) {
@@ -40,4 +57,6 @@ public class CommunityService {
 
         return new PostRes(community.getTitle(), community.getContent(), community.getCategory());
     }
+
+
 }
