@@ -19,9 +19,6 @@ public class Community extends BaseEntity {
     private String title;
     private String content;
     private String category;
-    private boolean status;
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
 
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
     private List<Comment> comments;
@@ -29,4 +26,13 @@ public class Community extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Builder
+    public Community(String title, String content, String category, List<Comment> comments, User user) {
+        this.title = title;
+        this.content = content;
+        this.category = category;
+        this.comments = comments;
+        this.user = user;
+    }
 }
