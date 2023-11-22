@@ -17,8 +17,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static inha.app.MyGate.common.Exception.BaseResponseStatus.SUCCESS;
 
@@ -102,6 +104,18 @@ public class CommunityController {
     public BaseResponse<List<CommunityResponse>> getCommList() {
         try {
             return new BaseResponse<>(communityService.getCommunityList());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/post/{communityId}")
+    @Operation(summary = "커뮤니티 글 상세보기", description = "커뮤니티 글 정보를 상세 조회한다.")
+    public BaseResponse<CommunityResponse> getPostInfo(@PathVariable(name = "communityId") Long communityId) {
+        try {
+            Optional<CommunityResponse> communityResponseOptional = communityService.getPostInfo(communityId);
+            CommunityResponse communityResponse = (CommunityResponse) ((Optional<?>) communityResponseOptional).orElseThrow(() -> new EntityNotFoundException("Community not found with id: " + communityId));
+            return new BaseResponse<>(communityResponse);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

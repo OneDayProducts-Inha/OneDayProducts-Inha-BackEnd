@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static inha.app.MyGate.common.Exception.BaseResponseStatus.*;
@@ -66,5 +67,10 @@ public class CommunityService {
     public List<CommunityResponse> getCommunityList() throws BaseException {
         return communityRepository.findByStatus(true)
                 .stream().map(CommunityResponse::toDto).collect(Collectors.toList());
+    }
+
+    public Optional<CommunityResponse> getPostInfo(Long id) throws BaseException {
+        return communityRepository.findByCommunityIdAndStatus(id, true)
+                .map(CommunityResponse::toDto);
     }
 }
