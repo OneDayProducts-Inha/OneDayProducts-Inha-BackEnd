@@ -113,9 +113,8 @@ public class CommunityController {
     @Operation(summary = "커뮤니티 글 상세보기", description = "커뮤니티 글 정보를 상세 조회한다.")
     public BaseResponse<CommunityResponse> getPostInfo(@PathVariable(name = "communityId") Long communityId) {
         try {
-            Optional<CommunityResponse> communityResponseOptional = communityService.getPostInfo(communityId);
-            CommunityResponse communityResponse = (CommunityResponse) ((Optional<?>) communityResponseOptional).orElseThrow(() -> new EntityNotFoundException("Community not found with id: " + communityId));
-            return new BaseResponse<>(communityResponse);
+            CommunityResponse communityResponse = communityService.getPostInfo(communityId);
+           return new BaseResponse<>(communityResponse);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

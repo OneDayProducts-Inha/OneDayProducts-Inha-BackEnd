@@ -69,8 +69,11 @@ public class CommunityService {
                 .stream().map(CommunityResponse::toDto).collect(Collectors.toList());
     }
 
-    public Optional<CommunityResponse> getPostInfo(Long id) throws BaseException {
-        return communityRepository.findByCommunityIdAndStatus(id, true)
-                .map(CommunityResponse::toDto);
+    public CommunityResponse getPostInfo(Long id) throws BaseException {
+        Community community = communityRepository.findByCommunityIdAndStatus(id, true)
+                .orElseThrow(() -> new BaseException(COMMUNITY_ID_NOT_FOUND));
+
+        return CommunityResponse.toDto(community);
     }
+
 }
