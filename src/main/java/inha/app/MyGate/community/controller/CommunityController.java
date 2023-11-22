@@ -120,8 +120,9 @@ public class CommunityController {
         }
     }
 
-    @GetMapping("/communities/search")
-    public BaseResponse<List<CommunityResponse>> searchCommunitiesByTitle(@RequestParam String keyword) {
-        return new BaseResponse<>(communityService.searchCommunitiesByTitle(keyword));
+    @GetMapping("/post/search")
+    @Operation(summary = "커뮤니티 글 검색(전체)", description = "커뮤니티 전체에서 검색. keword가 포함된 title 글이 모두 검색됨.")
+    public BaseResponse<List<CommunityResponse>> searchCommunity(@RequestParam String keyword) {
+        return new BaseResponse<>(communityService.searchCommunities(keyword));
     }
 }
