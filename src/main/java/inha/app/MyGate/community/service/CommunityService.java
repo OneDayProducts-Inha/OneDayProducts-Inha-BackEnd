@@ -76,4 +76,10 @@ public class CommunityService {
         return CommunityResponse.toDto(community);
     }
 
+    public List<CommunityResponse> searchCommunitiesByTitle(String keyword) {
+        List<Community> communities = communityRepository.findByTitleContaining(keyword);
+        return communities.stream()
+                .map(CommunityResponse::toDto)
+                .collect(Collectors.toList());
+    }
 }

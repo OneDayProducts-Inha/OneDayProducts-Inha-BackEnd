@@ -119,4 +119,9 @@ public class CommunityController {
             throw new RuntimeException(e);
         }
     }
+
+    @GetMapping("/communities/search")
+    public BaseResponse<List<CommunityResponse>> searchCommunitiesByTitle(@RequestParam String keyword) {
+        return new BaseResponse<>(communityService.searchCommunitiesByTitle(keyword));
+    }
 }
