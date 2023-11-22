@@ -15,4 +15,6 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
 
     List<Community> findByCategoryAndStatus(String category, Boolean status);
     List<Community> findByStatus(Boolean status);
+    List<Community> findByTitleContaining(String keyword);
+    List<Community> findByCategoryContainingAndTitleContaining(String category, String title);
 }
