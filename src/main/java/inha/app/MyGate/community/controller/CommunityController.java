@@ -122,7 +122,13 @@ public class CommunityController {
 
     @GetMapping("/post/search")
     @Operation(summary = "커뮤니티 글 검색(전체)", description = "커뮤니티 전체에서 검색. keword가 포함된 title 글이 모두 검색됨.")
-    public BaseResponse<List<CommunityResponse>> searchCommunity(@RequestParam String keyword) {
+    public BaseResponse<List<CommunityResponse>> searchCommunities(@RequestParam String keyword) {
         return new BaseResponse<>(communityService.searchCommunities(keyword));
+    }
+
+    @GetMapping("/post/search-category")
+    @Operation(summary = "커뮤니티 카테고리별 글 검색", description = "커뮤니티 전체에서 카테고리별 글을 검색한다.")
+    public List<CommunityResponse> searchCommunitiesByCategoryAndTitle(@RequestParam String category, @RequestParam String keyword) {
+        return communityService.searchCommunitiesByCategory(category, keyword);
     }
 }
