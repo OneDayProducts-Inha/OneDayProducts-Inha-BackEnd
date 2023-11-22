@@ -91,9 +91,7 @@ public class CommunityController {
     @Operation(summary = "커뮤니티 글 카테고리별 list 조회", description = "커뮤니티 글 리스트를 카테고리별로 조회한다.")
     public BaseResponse<List<CommunityResponse>> getCommCtgList(@RequestParam("category") String category) {
         try {
-            List<CommunityResponse> list = communityService.getCommunityCtgList(category);
-            System.out.println(list);
-            return new BaseResponse<>(list);
+            return new BaseResponse<>(communityService.getCommunityCtgList(category));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -103,9 +101,7 @@ public class CommunityController {
     @Operation(summary = "커뮤니티 글 전체 list 조회", description = "커뮤니티 글 리스트를 전체 조회한다.")
     public BaseResponse<List<CommunityResponse>> getCommList() {
         try {
-            List<CommunityResponse> list = communityService.getCommunityList();
-            System.out.println(list);
-            return new BaseResponse<>(list);
+            return new BaseResponse<>(communityService.getCommunityList());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
