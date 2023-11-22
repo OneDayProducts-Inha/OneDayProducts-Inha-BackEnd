@@ -58,5 +58,13 @@ public class CommunityService {
         return new PostRes(community.getTitle(), community.getContent(), community.getCategory());
     }
 
+    public List<CommunityResponse> getCommunityCtgList(String category) throws BaseException {
+        return communityRepository.findByCategoryAndStatus(category, true)
+                .stream().map(CommunityResponse::toDto).collect(Collectors.toList());
+    }
 
+    public List<CommunityResponse> getCommunityList() throws BaseException {
+        return communityRepository.findByStatus(true)
+                .stream().map(CommunityResponse::toDto).collect(Collectors.toList());
+    }
 }

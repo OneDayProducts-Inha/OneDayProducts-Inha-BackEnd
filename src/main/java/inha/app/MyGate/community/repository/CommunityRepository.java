@@ -12,4 +12,7 @@ import java.util.Optional;
 public interface CommunityRepository extends JpaRepository<Community, Long> {
     Optional<Community> findByCommunityIdAndStatus(Long communityId, Boolean status);
     List<Community> findByUserAndStatus(User user, Boolean status);
+
+    List<Community> findByCategoryAndStatus(String category, Boolean status);
+    List<Community> findByStatus(Boolean status);
 }

@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 import static inha.app.MyGate.common.Exception.BaseResponseStatus.SUCCESS;
@@ -74,6 +75,7 @@ public class CommunityController {
         }
     }
     @ResponseBody
+    @Operation(summary = "커뮤니티 글 작성", description = "커뮤니티 글을 작성한다. ")
     @PostMapping("/post")
     public BaseResponse<String> createPost(@RequestBody PostReq postReq){
         try{
@@ -82,6 +84,26 @@ public class CommunityController {
             return new BaseResponse<>(SUCCESS);
         }catch (Exception e){
             return new BaseResponse<>(e.getMessage());
+        }
+    }
+
+    @GetMapping("/category/list")
+    @Operation(summary = "커뮤니티 글 카테고리별 list 조회", description = "커뮤니티 글 리스트를 카테고리별로 조회한다.")
+    public BaseResponse<List<CommunityResponse>> getCommCtgList(@RequestParam("category") String category) {
+        try {
+            return new BaseResponse<>(communityService.getCommunityCtgList(category));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/postList")
+    @Operation(summary = "커뮤니티 글 전체 list 조회", description = "커뮤니티 글 리스트를 전체 조회한다.")
+    public BaseResponse<List<CommunityResponse>> getCommList() {
+        try {
+            return new BaseResponse<>(communityService.getCommunityList());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }
