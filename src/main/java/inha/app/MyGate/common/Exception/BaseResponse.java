@@ -26,6 +26,9 @@ public class BaseResponse<T> {
         this.message = status.getMessage();
         this.code = status.getCode();
     }
+    public static BaseResponse error(BaseResponseStatus status){
+        return new BaseResponse<>(status);
+    }
 
     public Boolean getIsSuccess() {
         return this.isSuccess;
