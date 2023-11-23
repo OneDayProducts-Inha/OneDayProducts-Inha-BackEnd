@@ -22,4 +22,4 @@ server:
   port: 8080
 
 jwt:
-  secret: 135b8378904571a649516713c9b3bbffc14f3464a3131504aec324cde5327b4d
+  secret: ENC(q9MDIleWPF74p2d/rNEczUUlpkS4VzeB3jGbLNqQJhAqLYgRK5TqCrO1u1LsvyKDK6PXfv+/OtlTvbQCdMTxzP3v1w1N2ZZpn5xyl1jimTo=)
