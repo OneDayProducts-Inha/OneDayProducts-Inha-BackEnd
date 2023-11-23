@@ -3,10 +3,12 @@ package inha.app.MyGate.user.controller;
 import inha.app.MyGate.common.Exception.BaseException;
 import inha.app.MyGate.common.Exception.BaseResponse;
 import inha.app.MyGate.common.Exception.BaseResponseStatus;
+import inha.app.MyGate.user.dto.request.LoginRequest;
 import inha.app.MyGate.user.dto.request.UserInfoRequest;
-import inha.app.MyGate.user.dto.response.SignUpResponse;
+import inha.app.MyGate.user.dto.response.JwtResponse;
 import inha.app.MyGate.user.dto.response.UserInfoResponse;
 import inha.app.MyGate.user.service.UserService;
+import inha.app.MyGate.utils.JwtService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -22,12 +24,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
-
+    private final JwtService jwtService;
     // 회원가입
+    @Operation(summary = "회원가입", description = "휴대폰번호, 이름, 비밀번호로 회원가입한다. ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다."),
+    })
     @PostMapping("/sign-up")
-    public BaseResponse<SignUpResponse> createUser(@RequestBody UserInfoRequest request) throws BaseException {
-        SignUpResponse res = userService.createUser(request);
-        return new BaseResponse<>(res);
+    public BaseResponse<JwtResponse> createUser(@RequestBody UserInfoRequest request) {
+        try{
+            JwtResponse res = userService.createUser(request);
+            return new BaseResponse<>(res);
+        }catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+
     }
 
     // 사용자 정보 조회
@@ -60,5 +71,20 @@ public class UserController {
             return new BaseResponse<>(e.getStatus());
         }
     }
+
+    // login
+    @Operation(summary = "로그인", description = "휴대폰번호, 비밀번호로 로그인한다. ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다. \n (2010)유저 아이디 값을 확인해주세요. \n (2030)비밀번호를 입력해주세요. \n (3014)없는 아이디거나 비밀번호가 틀렸습니다."),
+    })
+    @PostMapping("/log-in")
+    public BaseResponse<JwtResponse> loginUser(@RequestBody LoginRequest loginRequest){
+        try {
+            return new BaseResponse<>(userService.loginUser(loginRequest));
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
 
 }
