@@ -3,27 +3,21 @@ package inha.app.MyGate.user.controller;
 import inha.app.MyGate.common.Exception.BaseException;
 import inha.app.MyGate.common.Exception.BaseResponse;
 import inha.app.MyGate.common.Exception.BaseResponseStatus;
-import inha.app.MyGate.common.resolver.LoginUser;
 import inha.app.MyGate.user.dto.request.LoginRequest;
 import inha.app.MyGate.user.dto.request.UserInfoRequest;
-import inha.app.MyGate.user.dto.response.LoginResponse;
-import inha.app.MyGate.user.dto.response.SignUpResponse;
+import inha.app.MyGate.user.dto.response.JwtResponse;
 import inha.app.MyGate.user.dto.response.UserInfoResponse;
 import inha.app.MyGate.user.entity.User;
 import inha.app.MyGate.user.service.UserService;
+import inha.app.MyGate.utils.JwtService;
+import io.jsonwebtoken.Jwt;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
-
-import static inha.app.MyGate.common.Exception.BaseResponseStatus.POST_USERS_EMPTY_PW;
-import static inha.app.MyGate.common.Exception.BaseResponseStatus.USERS_EMPTY_USER_ID;
 
 @Api(tags = "유저", value = "회원 정보 관리 기능 구현한 User Controller 입니다.")
 @Slf4j
@@ -32,16 +26,16 @@ import static inha.app.MyGate.common.Exception.BaseResponseStatus.USERS_EMPTY_US
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
-
+    private final JwtService jwtService;
     // 회원가입
     @Operation(summary = "회원가입", description = "휴대폰번호, 이름, 비밀번호로 회원가입한다. ")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다."),
     })
     @PostMapping("/sign-up")
-    public BaseResponse<SignUpResponse> createUser(@RequestBody UserInfoRequest request) {
+    public BaseResponse<JwtResponse> createUser(@RequestBody UserInfoRequest request) {
         try{
-            SignUpResponse res = userService.createUser(request);
+            JwtResponse res = userService.createUser(request);
             return new BaseResponse<>(res);
         }catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
@@ -86,29 +80,9 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다. \n (2010)유저 아이디 값을 확인해주세요. \n (2030)비밀번호를 입력해주세요. \n (3014)없는 아이디거나 비밀번호가 틀렸습니다."),
     })
     @PostMapping("/log-in")
-    public BaseResponse<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest){
+    public BaseResponse<JwtResponse> loginUser(@RequestBody LoginRequest loginRequest){
         try {
-            // null값 체크
-//            if (loginRequest.getPhoneNum() == null) {
-//                return new BaseResponse<>(USERS_EMPTY_USER_ID);
-//
-//            }
-//            if (loginRequest.getPw() == null) {
-//                return new BaseResponse<>(POST_USERS_EMPTY_PW);
-//            }
-//
-//            LoginResponse res = userService.loginUser(loginRequest);
-//
-//
-//            User loggedInUser = null;
-//            loggedInUser.setUserId(res.getId());
-//            loggedInUser.setName(res.getName());
-//            loggedInUser.setPhone_num(res.getPhoneNum());
-//
-//            session.setAttribute(SessionConst.LOGIN_USER, loggedInUser);
-//            return new BaseResponse<>(res);
             return new BaseResponse<>(userService.loginUser(loginRequest));
-
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
         }
