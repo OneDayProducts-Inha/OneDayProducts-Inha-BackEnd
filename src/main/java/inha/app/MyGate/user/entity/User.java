@@ -41,4 +41,17 @@ public class User extends BaseEntity {
         if (!request.getName().equals(userName)) phoneNum = request.getPhoneNum();
         if (!request.getPhoneNum().equals(pw)) phoneNum = request.getPhoneNum();
     }
+
+    public static int getAmericanAge(LocalDate date) {
+        LocalDate now  = LocalDate.now();
+        int americanAge = now.minusYears(date.getYear()).getYear(); // (1)
+
+        // (2)
+        // 생일이 지났는지 여부를 판단하기 위해 (1)을 입력받은 생년월일의 연도에 더한다.
+        // 연도가 같아짐으로 생년월일만 판단할 수 있다!
+        if (date.plusYears(americanAge).isAfter(now)) {
+            americanAge = americanAge -1;
+        }
+        return americanAge;
+    }
 }
