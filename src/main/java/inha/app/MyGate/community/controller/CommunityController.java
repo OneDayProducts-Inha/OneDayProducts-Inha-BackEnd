@@ -41,7 +41,7 @@ public class CommunityController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다."),
     })
-    @PostMapping("/mypost")
+    @GetMapping("/mypost")
     public BaseResponse<List<CommunityResponse>> getMyCommunity(@LoginUser User user) {
         try{
             return new BaseResponse<>(communityService.getMyCommunity(user));
@@ -54,7 +54,7 @@ public class CommunityController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다."),
     })
-    @PostMapping("/mycomment")
+    @GetMapping("/mycomment")
     public BaseResponse<List<CommunityResponse>> gerMyComment(@LoginUser User user) {
         try{
             return new BaseResponse<>(communityService.gerMyComment(user));
