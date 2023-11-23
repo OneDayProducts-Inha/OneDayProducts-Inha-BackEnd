@@ -1,7 +1,7 @@
 package inha.app.MyGate.common.config;
 
-import com.example.practiceeee.repository.UserRepository;
-import com.example.practiceeee.utils.JwtService;
+import inha.app.MyGate.user.repository.UserRepository;
+import inha.app.MyGate.utils.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
