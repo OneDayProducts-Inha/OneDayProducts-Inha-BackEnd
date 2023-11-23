@@ -31,8 +31,7 @@ public class CommunityService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void postComment(Long userId, Long communityId, CommentRequest request) throws BaseException {
-        User user = userRepository.findByUserIdAndStatus(userId, true).orElseThrow(() -> new BaseException(USER_NOT_FOUND));
+    public void postComment(User user, Long communityId, CommentRequest request) throws BaseException {
         if(!StringUtils.hasText(request.getComment())) throw new BaseException(POST_EMPTY_COMMENT);
         Community community = communityRepository.findByCommunityIdAndStatus(communityId, true).orElseThrow(() -> new BaseException(COMMUNITY_NOT_FOUND));
         commentRepository.save(Comment.toEntity(request.getComment(), user, community));
@@ -45,8 +44,7 @@ public class CommunityService {
                 .stream().map(CommunityResponse::toDto).collect(Collectors.toList());
     }
 
-    public List<CommunityResponse> getMyCommunity(Long userId) throws BaseException {
-        User user = userRepository.findByUserIdAndStatus(userId, true).orElseThrow(() -> new BaseException(USER_NOT_FOUND));
+    public List<CommunityResponse> getMyCommunity(User user) throws BaseException {
         return communityRepository.findByUserAndStatus(user, true)
                 .stream().map(CommunityResponse::toDto).collect(Collectors.toList());
     }

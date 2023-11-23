@@ -3,10 +3,12 @@ package inha.app.MyGate.user.controller;
 import inha.app.MyGate.common.Exception.BaseException;
 import inha.app.MyGate.common.Exception.BaseResponse;
 import inha.app.MyGate.common.Exception.BaseResponseStatus;
+import inha.app.MyGate.common.resolver.LoginUser;
 import inha.app.MyGate.user.dto.request.LoginRequest;
 import inha.app.MyGate.user.dto.request.UserInfoRequest;
 import inha.app.MyGate.user.dto.response.JwtResponse;
 import inha.app.MyGate.user.dto.response.UserInfoResponse;
+import inha.app.MyGate.user.entity.User;
 import inha.app.MyGate.user.service.UserService;
 import inha.app.MyGate.utils.JwtService;
 import io.swagger.annotations.Api;
@@ -24,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
-    private final JwtService jwtService;
     // 회원가입
     @Operation(summary = "회원가입", description = "휴대폰번호, 이름, 비밀번호로 회원가입한다. ")
     @ApiResponses(value = {
@@ -47,10 +48,9 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다.\n (2014)유저를 찾을 수 없습니다."),
     })
     @GetMapping("/mypage")
-    public BaseResponse<UserInfoResponse> getUserInfo() {
+    public BaseResponse<UserInfoResponse> getUserInfo(@LoginUser User user) {
         try{
-            Long userId = 1L;
-            return new BaseResponse<>(userService.getUserInfo(userId));
+            return new BaseResponse<>(userService.getUserInfo(user));
         }catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
         }
