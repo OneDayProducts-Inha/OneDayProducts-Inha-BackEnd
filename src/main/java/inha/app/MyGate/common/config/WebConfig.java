@@ -1,23 +1,27 @@
 package inha.app.MyGate.common.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Configuration // 스프링 빈으로 등록
-public class WebConfig implements WebMvcConfigurer {
-    private final long MAX_AGE_SECS = 3600;
+import java.util.List;
 
+@RequiredArgsConstructor
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        // 모든 경로에 대해
-        registry.addMapping("/**")
-                // Origin이 http:localhost:3000에 대해
-                .allowedOrigins("http://localhost:3000")
-                // GET, POST, PUT, PATCH, DELETE, OPTIONS 메서드를 허용한다.
-                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-                .allowedHeaders("*")
-                .allowCredentials(true)
-                .maxAge(MAX_AGE_SECS);
+        registry.addMapping("/*") // url 패턴
+                .allowedOriginPatterns("")
+                // todo: server url 생성 시 변경 필요
+//                .allowedOrigins("url:8080", "http://localhost:8080")
+                .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PATCH.name(), HttpMethod.DELETE.name(), HttpMethod.OPTIONS.name(),
+                        HttpMethod.HEAD.name(), HttpMethod.TRACE.name(), HttpMethod.OPTIONS.name()) // 허용 method
+                .allowedHeaders("Authorization", "Content-Type") // 허용 header
+                .allowCredentials(true);
     }
+
 }
