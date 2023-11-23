@@ -5,6 +5,7 @@ import inha.app.MyGate.user.dto.request.LoginRequest;
 import inha.app.MyGate.user.dto.request.UserInfoRequest;
 import inha.app.MyGate.user.dto.response.JwtResponse;
 import inha.app.MyGate.user.dto.response.UserInfoResponse;
+import inha.app.MyGate.user.entity.Gender;
 import inha.app.MyGate.user.entity.User;
 import inha.app.MyGate.user.repository.UserRepository;
 import inha.app.MyGate.utils.JwtService;
@@ -28,7 +29,9 @@ public class UserService {
 
     @Transactional
     public JwtResponse createUser(UserInfoRequest request) throws BaseException {
-        User user = userRepository.save(request.toEntity());
+        User user = User.toEntity(request);
+        userRepository.save(user);
+        System.out.println("Gender: " + user.getGender());
         return new JwtResponse(jwtService.createJwt(user.getUserId()));
     }
 
@@ -54,7 +57,5 @@ public class UserService {
         }
         // 토큰 생성
         return new JwtResponse(jwtService.createJwt(user.getUserId()));
-
-
     }
 }

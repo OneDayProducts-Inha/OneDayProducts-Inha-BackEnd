@@ -25,6 +25,18 @@ public class User extends BaseEntity {
     private LocalDate birth;
     private String imgUrl;
 
+    public static User toEntity(UserInfoRequest request){
+
+        return User.builder()
+                .userName(request.getName())
+                .phoneNum(request.getPhoneNum())
+                .gender(Gender.getGenderByValue(request.getGender()))
+                .birth(request.getBirth())
+                .location(request.getLocation())
+                .imgUrl(request.getImgUrl())
+                .pw(request.getPw())
+                .build();
+    }
     @Builder
     public User(String userName, String phoneNum, String pw, String location, Gender gender, LocalDate birth, String imgUrl) {
         this.userName = userName;
