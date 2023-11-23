@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
-    private final JwtService jwtService;
     // 회원가입
     @Operation(summary = "회원가입", description = "휴대폰번호, 이름, 비밀번호로 회원가입한다. ")
     @ApiResponses(value = {

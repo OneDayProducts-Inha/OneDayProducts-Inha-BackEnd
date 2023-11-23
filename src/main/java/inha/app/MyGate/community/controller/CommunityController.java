@@ -3,11 +3,13 @@ package inha.app.MyGate.community.controller;
 import inha.app.MyGate.common.Exception.BaseException;
 import inha.app.MyGate.common.Exception.BaseResponse;
 import inha.app.MyGate.common.Exception.BaseResponseStatus;
+import inha.app.MyGate.common.resolver.LoginUser;
 import inha.app.MyGate.community.dto.request.CommentRequest;
 import inha.app.MyGate.community.dto.request.PostReq;
 import inha.app.MyGate.community.dto.response.CommunityResponse;
 import inha.app.MyGate.community.dto.response.PostRes;
 import inha.app.MyGate.community.service.CommunityService;
+import inha.app.MyGate.user.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,10 +40,9 @@ public class CommunityController {
             @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다."),
     })
     @PostMapping("/mypost")
-    public BaseResponse<List<CommunityResponse>> getMyCommunity() {
+    public BaseResponse<List<CommunityResponse>> getMyCommunity(@LoginUser User user) {
         try{
-            Long userId = 1L;
-            return new BaseResponse<>(communityService.getMyCommunity(userId));
+            return new BaseResponse<>(communityService.getMyCommunity(user));
         }catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
         }
@@ -67,10 +68,10 @@ public class CommunityController {
     })
     @PostMapping("/comment/{communityId}")
     public BaseResponse<Void> postComment(@Parameter(description = "(Long) 커뮤니티 id", example = "1") @PathVariable(name = "communityId") Long communityId,
-                                          @RequestBody CommentRequest request) {
+                                          @RequestBody CommentRequest request,
+                                          @LoginUser User user) {
         try{
-            Long userId = 1L;
-            communityService.postComment(userId, communityId, request);
+            communityService.postComment(user, communityId, request);
             return new BaseResponse<>(BaseResponseStatus.SUCCESS);
         }catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
