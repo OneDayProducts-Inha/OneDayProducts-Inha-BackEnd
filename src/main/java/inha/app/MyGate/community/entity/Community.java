@@ -1,5 +1,6 @@
 package inha.app.MyGate.community.entity;
 
+import inha.app.MyGate.common.Exception.BaseException;
 import inha.app.MyGate.common.entity.BaseEntity;
 import inha.app.MyGate.user.entity.User;
 import lombok.*;
@@ -18,7 +19,8 @@ public class Community extends BaseEntity {
     private Long communityId;
     private String title;
     private String content;
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
     private List<Comment> comments;
@@ -28,7 +30,7 @@ public class Community extends BaseEntity {
     private User user;
 
     @Builder
-    public Community(String title, String content, String category, List<Comment> comments, User user) {
+    public Community(String title, String content, Category category, List<Comment> comments, User user) throws BaseException {
         this.title = title;
         this.content = content;
         this.category = category;

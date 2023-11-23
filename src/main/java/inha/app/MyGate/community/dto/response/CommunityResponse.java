@@ -25,7 +25,7 @@ public class CommunityResponse {
                 .communityId(community.getCommunityId())
                 .title(community.getTitle())
                 .content(community.getContent())
-                .category(community.getCategory())
+                .category(community.getCategory().getValue())
                 .build();
     }
 
@@ -34,7 +34,7 @@ public class CommunityResponse {
                 .communityId(comment.getCommunity().getCommunityId())
                 .title(comment.getCommunity().getTitle())
                 .content(comment.getCommunity().getContent())
-                .category(comment.getCommunity().getCategory())
+                .category(comment.getCommunity().getCategory().getValue())
                 .build();
     }
 }
