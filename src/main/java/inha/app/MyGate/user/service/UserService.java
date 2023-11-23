@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import static inha.app.MyGate.common.Exception.BaseResponseStatus.*;
 
 /**
@@ -29,6 +31,11 @@ public class UserService {
 
     @Transactional
     public JwtResponse createUser(UserInfoRequest request) throws BaseException {
+        // 이미 있는 휴대폰 번호면 예외처리
+        Optional<User> existUser = userRepository.existsByPhoneNum(request.getPhoneNum());
+        if(existUser != null){
+            throw new BaseException(USERS_EXISTS_PHONE_NUM);
+        }
         User user = User.toEntity(request);
         userRepository.save(user);
         System.out.println("Gender: " + user.getGender());

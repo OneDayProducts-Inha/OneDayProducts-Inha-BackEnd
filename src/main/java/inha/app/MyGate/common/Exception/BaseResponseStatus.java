@@ -8,6 +8,7 @@ public enum BaseResponseStatus {
     INVALID_USER_JWT(false, 2003, "권한이 없는 유저의 접근입니다."),
     USERS_EMPTY_USER_ID(false, 2010, "유저 아이디 값을 확인해주세요."),
     USERS_EXISTS_USER_ID(false, 2011, "중복된 아이디입니다."),
+    USERS_EXISTS_PHONE_NUM(false, 2012, "중복된 핸드폰 번호입니다."),
     USERS_EXISTS_NICKNAME(false, 2012, "중복된 닉네임입니다."),
     USERS_FAILED_TO_SIGN_UP(false, 2013, "회원 가입에 실패하였습니다."),
     USER_NOT_FOUND(false, 2014, "유저를 찾을 수 없습니다."),

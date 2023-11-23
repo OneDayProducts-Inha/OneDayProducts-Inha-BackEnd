@@ -26,10 +26,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+
     // 회원가입
-    @Operation(summary = "회원가입", description = "휴대폰번호, 이름, 비밀번호로 회원가입한다. ")
+    @Operation(summary = "회원가입", description = "휴대폰번호, 닉네임, 비밀번호, 위치, 프로필이미지, 성별, 생년월일로 회원가입한다. ")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다."),
+            @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다. \n (2012) 중복된 핸드폰 번호입니다."),
     })
     @PostMapping("/sign-up")
     public BaseResponse<JwtResponse> createUser(@RequestBody UserInfoRequest request) {
@@ -39,7 +40,6 @@ public class UserController {
         }catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
         }
-
     }
 
     // 사용자 정보 조회
