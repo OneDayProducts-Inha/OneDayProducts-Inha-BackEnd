@@ -6,6 +6,7 @@ import inha.app.MyGate.common.Exception.BaseResponseStatus;
 import inha.app.MyGate.common.resolver.LoginUser;
 import inha.app.MyGate.community.dto.request.CommentRequest;
 import inha.app.MyGate.community.dto.request.PostReq;
+import inha.app.MyGate.community.dto.response.CommunityRes;
 import inha.app.MyGate.community.dto.response.CommunityResponse;
 import inha.app.MyGate.community.dto.response.PostRes;
 import inha.app.MyGate.community.service.CommunityService;
@@ -112,10 +113,10 @@ public class CommunityController {
 
     @GetMapping("/post/{communityId}")
     @Operation(summary = "커뮤니티 글 상세보기", description = "커뮤니티 글 정보를 상세 조회한다.")
-    public BaseResponse<CommunityResponse> getPostInfo(@PathVariable(name = "communityId") Long communityId) {
+    public BaseResponse<CommunityRes> getPostInfo(@PathVariable(name = "communityId") Long communityId) {
         try {
-            CommunityResponse communityResponse = communityService.getPostInfo(communityId);
-           return new BaseResponse<>(communityResponse);
+            CommunityRes communityRes = communityService.getPostInfo(communityId);
+           return new BaseResponse<>(communityRes);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

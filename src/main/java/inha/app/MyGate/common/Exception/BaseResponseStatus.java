@@ -41,7 +41,8 @@ public enum BaseResponseStatus {
     CHATROOM_NOT_SOLD(false, 5002, "상품이 판매되지 않았습니다."),
     CHATROOM_ID_NOT_PROVIDED(false, 5003, "채팅방 ID가 제공되지 않았습니다."),
     GOODS_NOT_FOUND_IN_CHATROOM(false, 5004, "채팅방에서 상품을 찾을 수 없습니다."),
-    DUPLICATE_USER_ID(false, 5005, "DB상에 동일한 userID가 존재합니다.");
+    DUPLICATE_USER_ID(false, 5005, "DB상에 동일한 userID가 존재합니다."),
+    CATEGORY_NOT_FOUND(false, 6000, "해당 카테고리가 존재하지 않습니다.");
 
 
     private final boolean isSuccess;

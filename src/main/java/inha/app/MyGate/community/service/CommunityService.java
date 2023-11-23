@@ -3,6 +3,7 @@ package inha.app.MyGate.community.service;
 import inha.app.MyGate.common.Exception.BaseException;
 import inha.app.MyGate.community.dto.request.CommentRequest;
 import inha.app.MyGate.community.dto.request.PostReq;
+import inha.app.MyGate.community.dto.response.CommunityRes;
 import inha.app.MyGate.community.dto.response.CommunityResponse;
 import inha.app.MyGate.community.dto.response.PostRes;
 import inha.app.MyGate.community.entity.Comment;
@@ -53,7 +54,7 @@ public class CommunityService {
     @Transactional
     public PostRes createPost(PostReq postReq) {
         Community community = communityRepository.save(postReq.toEntity());
-
+        System.out.println(community.isStatus());
         return new PostRes(community.getTitle(), community.getContent(), community.getCategory());
     }
 
@@ -67,11 +68,11 @@ public class CommunityService {
                 .stream().map(CommunityResponse::toDto).collect(Collectors.toList());
     }
 
-    public CommunityResponse getPostInfo(Long id) throws BaseException {
+    public CommunityRes getPostInfo(Long id) throws BaseException {
         Community community = communityRepository.findByCommunityIdAndStatus(id, true)
                 .orElseThrow(() -> new BaseException(COMMUNITY_ID_NOT_FOUND));
-
-        return CommunityResponse.toDto(community);
+        System.out.println(community + ".. service");
+        return CommunityRes.toDto(community);
     }
 
     public List<CommunityResponse> searchCommunities(String keyword) {
