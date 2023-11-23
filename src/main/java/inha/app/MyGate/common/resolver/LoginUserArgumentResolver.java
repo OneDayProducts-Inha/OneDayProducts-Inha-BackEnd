@@ -6,8 +6,10 @@ import inha.app.MyGate.user.entity.User;
 import inha.app.MyGate.user.repository.UserRepository;
 import inha.app.MyGate.utils.JwtService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -18,7 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import static inha.app.MyGate.common.Exception.BaseResponseStatus.INVALID_JWT;
 
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Component
 public class LoginUserArgumentResolver  implements HandlerMethodArgumentResolver {
     private JwtService jwtTokenProvider;
     private UserRepository userRepository;

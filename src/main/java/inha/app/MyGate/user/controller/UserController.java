@@ -39,9 +39,14 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다."),
     })
     @PostMapping("/sign-up")
-    public BaseResponse<SignUpResponse> createUser(@RequestBody UserInfoRequest request) throws BaseException {
-        SignUpResponse res = userService.createUser(request);
-        return new BaseResponse<>(res);
+    public BaseResponse<SignUpResponse> createUser(@RequestBody UserInfoRequest request) {
+        try{
+            SignUpResponse res = userService.createUser(request);
+            return new BaseResponse<>(res);
+        }catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+
     }
 
     // 사용자 정보 조회
@@ -80,49 +85,34 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다. \n (2010)유저 아이디 값을 확인해주세요. \n (2030)비밀번호를 입력해주세요. \n (3014)없는 아이디거나 비밀번호가 틀렸습니다."),
     })
-    @GetMapping("/log-in")
-    public BaseResponse<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest, HttpSession session) throws BaseException {
+    @PostMapping("/log-in")
+    public BaseResponse<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest){
         try {
             // null값 체크
-            if (loginRequest.getPhoneNum() == null) {
-                return new BaseResponse<>(USERS_EMPTY_USER_ID);
-
-            }
-            if (loginRequest.getPw() == null) {
-                return new BaseResponse<>(POST_USERS_EMPTY_PW);
-            }
-
-            LoginResponse res = userService.loginUser(loginRequest);
-
-
-            User loggedInUser = null;
-            loggedInUser.setUserId(res.getId());
-            loggedInUser.setName(res.getName());
-            loggedInUser.setPhone_num(res.getPhoneNum());
-
-            session.setAttribute(SessionConst.LOGIN_USER, loggedInUser);
-            return new BaseResponse<>(res);
+//            if (loginRequest.getPhoneNum() == null) {
+//                return new BaseResponse<>(USERS_EMPTY_USER_ID);
+//
+//            }
+//            if (loginRequest.getPw() == null) {
+//                return new BaseResponse<>(POST_USERS_EMPTY_PW);
+//            }
+//
+//            LoginResponse res = userService.loginUser(loginRequest);
+//
+//
+//            User loggedInUser = null;
+//            loggedInUser.setUserId(res.getId());
+//            loggedInUser.setName(res.getName());
+//            loggedInUser.setPhone_num(res.getPhoneNum());
+//
+//            session.setAttribute(SessionConst.LOGIN_USER, loggedInUser);
+//            return new BaseResponse<>(res);
+            return new BaseResponse<>(userService.loginUser(loginRequest));
 
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
         }
     }
 
-
-
-
-
-    // ArgumentResolver 사용해 세션 검증을 하는 방식
-    @GetMapping("/")
-    public String homeLoginArgumentResolver(@LoginUser User loginUser, Model model){
-        // 세션에 회원 데이터가 없으면 home
-        if(loginUser == null){
-            return "home";
-        }
-
-        // 세션이 유지되면 로그인으로 이동
-        model.addAttribute("user", loginUser);
-        return "loginHome";
-    }
 
 }

@@ -4,6 +4,7 @@ import inha.app.MyGate.common.resolver.LoginUserArgumentResolver;
 import inha.app.MyGate.user.repository.UserRepository;
 import inha.app.MyGate.utils.JwtService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -11,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.List;
 
 @Configuration
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
     private final LoginUserArgumentResolver loginResolver;
     @Override

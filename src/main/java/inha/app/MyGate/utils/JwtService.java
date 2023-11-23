@@ -24,7 +24,7 @@ public class JwtService {
 
     public String createJwt(Long id){
         long now = (new Date()).getTime();
-        return Jwts.builder()
+        return "Bearer " + Jwts.builder()
                 .setSubject(id.toString())       // payload "sub": "name"
                 .claim("userIdx", id)        // payload "auth": "ROLE_USER"
                 .setExpiration(new Date(now + ACCESS_TOKEN_EXPIRE_TIME))        // payload "exp": 1516239022 (예시)
