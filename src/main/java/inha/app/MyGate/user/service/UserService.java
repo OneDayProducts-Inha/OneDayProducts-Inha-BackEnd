@@ -43,8 +43,7 @@ public class UserService {
     }
 
     // 사용자 정보 조회
-    public UserInfoResponse getUserInfo(Long userId) throws BaseException {
-        User user = userRepository.findByUserIdAndStatus(userId, true).orElseThrow(() -> new BaseException(USER_NOT_FOUND));
+    public UserInfoResponse getUserInfo(User user) throws BaseException {
         return UserInfoResponse.toDto(user);
     }
 
@@ -59,7 +58,7 @@ public class UserService {
     public JwtResponse loginUser(LoginRequest loginRequest) throws BaseException{
         User user = userRepository.findByPhoneNumAndStatus(loginRequest.getPhoneNum(), true).orElseThrow(() -> new BaseException(USER_NOT_FOUND));
         //  비밀번호 맞는지 확인
-        if(user.getPw() != loginRequest.getPw()){
+        if(!user.getPw().equals(loginRequest.getPw())){
             throw new BaseException(FAILED_TO_LOGIN);
         }
         // 토큰 생성
