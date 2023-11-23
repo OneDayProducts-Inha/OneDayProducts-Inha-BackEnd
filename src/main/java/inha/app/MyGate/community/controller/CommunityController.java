@@ -3,11 +3,14 @@ package inha.app.MyGate.community.controller;
 import inha.app.MyGate.common.Exception.BaseException;
 import inha.app.MyGate.common.Exception.BaseResponse;
 import inha.app.MyGate.common.Exception.BaseResponseStatus;
+import inha.app.MyGate.common.resolver.LoginUser;
 import inha.app.MyGate.community.dto.request.CommentRequest;
 import inha.app.MyGate.community.dto.request.PostReq;
+import inha.app.MyGate.community.dto.response.CommunityRes;
 import inha.app.MyGate.community.dto.response.CommunityResponse;
 import inha.app.MyGate.community.dto.response.PostRes;
 import inha.app.MyGate.community.service.CommunityService;
+import inha.app.MyGate.user.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,7 +20,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static inha.app.MyGate.common.Exception.BaseResponseStatus.SUCCESS;
 
@@ -35,10 +41,9 @@ public class CommunityController {
             @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다."),
     })
     @PostMapping("/mypost")
-    public BaseResponse<List<CommunityResponse>> getMyCommunity() {
+    public BaseResponse<List<CommunityResponse>> getMyCommunity(@LoginUser User user) {
         try{
-            Long userId = 1L;
-            return new BaseResponse<>(communityService.getMyCommunity(userId));
+            return new BaseResponse<>(communityService.getMyCommunity(user));
         }catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
         }
@@ -64,16 +69,17 @@ public class CommunityController {
     })
     @PostMapping("/comment/{communityId}")
     public BaseResponse<Void> postComment(@Parameter(description = "(Long) 커뮤니티 id", example = "1") @PathVariable(name = "communityId") Long communityId,
-                                          @RequestBody CommentRequest request) {
+                                          @RequestBody CommentRequest request,
+                                          @LoginUser User user) {
         try{
-            Long userId = 1L;
-            communityService.postComment(userId, communityId, request);
+            communityService.postComment(user, communityId, request);
             return new BaseResponse<>(BaseResponseStatus.SUCCESS);
         }catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
         }
     }
     @ResponseBody
+    @Operation(summary = "커뮤니티 글 작성", description = "커뮤니티 글을 작성한다.")
     @PostMapping("/post")
     public BaseResponse<String> createPost(@RequestBody PostReq postReq){
         try{
@@ -83,5 +89,48 @@ public class CommunityController {
         }catch (Exception e){
             return new BaseResponse<>(e.getMessage());
         }
+    }
+
+    @GetMapping("/category/list")
+    @Operation(summary = "커뮤니티 글 카테고리별 list 조회", description = "커뮤니티 글 리스트를 카테고리별로 조회한다.")
+    public BaseResponse<List<CommunityResponse>> getCommCtgList(@RequestParam("category") String category) {
+        try {
+            return new BaseResponse<>(communityService.getCommunityCtgList(category));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/postList")
+    @Operation(summary = "커뮤니티 글 전체 list 조회", description = "커뮤니티 글 리스트를 전체 조회한다.")
+    public BaseResponse<List<CommunityResponse>> getCommList() {
+        try {
+            return new BaseResponse<>(communityService.getCommunityList());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/post/{communityId}")
+    @Operation(summary = "커뮤니티 글 상세보기", description = "커뮤니티 글 정보를 상세 조회한다.")
+    public BaseResponse<CommunityRes> getPostInfo(@PathVariable(name = "communityId") Long communityId) {
+        try {
+            CommunityRes communityRes = communityService.getPostInfo(communityId);
+           return new BaseResponse<>(communityRes);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/post/search")
+    @Operation(summary = "커뮤니티 글 검색(전체)", description = "커뮤니티에 작성된 전체 글 중 제목에 keword가 포함된 글을 검색한다.")
+    public BaseResponse<List<CommunityResponse>> searchCommunities(@RequestParam String keyword) {
+        return new BaseResponse<>(communityService.searchCommunities(keyword));
+    }
+
+    @GetMapping("/post/search-category")
+    @Operation(summary = "커뮤니티 카테고리별 글 검색", description = "커뮤니티에서 해당 카테고리에 작성된 글 중 제목에 keword가 포함된 글을 검색한다.")
+    public BaseResponse<List<CommunityResponse>> searchCommunitiesByCategoryAndTitle(@RequestParam String category, @RequestParam String keyword) {
+        return new BaseResponse<>(communityService.searchCommunitiesByCategory(category, keyword));
     }
 }

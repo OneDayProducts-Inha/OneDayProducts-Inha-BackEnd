@@ -17,7 +17,7 @@ public class BaseEntity {
 
     @Setter
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
-    private boolean status;
+    private boolean status = true;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

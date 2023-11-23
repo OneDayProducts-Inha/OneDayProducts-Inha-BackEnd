@@ -56,7 +56,8 @@ jobs:
          port: 22
          key: ${{ secrets.PRIVATE_KEY }}
          script: |
-          sudo docker rm -f $(docker ps --filter name=inha-product -a -q)
+          sudo docker stop $(docker ps -a -q)
+          sudo docker rm $(docker ps -a -q)
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/inha-product
           sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/inha-product 
           sudo docker image prune -f

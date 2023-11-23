@@ -19,8 +19,8 @@ public enum BaseResponseStatus {
     POST_BOARDS_EMPTY_TITLE(false, 2018, "제목은 두 글자 이상으로 작성해주세요."),
     POST_EMPTY_COMMENT(false, 2019, "댓글을 입력해주세요."),
     COMMUNITY_NOT_FOUND(false, 2020, "커뮤니티 글을 찾을 수 없습니다."),
-
     POST_USERS_EMPTY_PW(false, 2030, "비밀번호를 입력해주세요."),
+    COMMUNITY_ID_NOT_FOUND(false, 2021, "해당하는 ID의 커뮤니티 글을 찾을 수 없습니다."),
     POST_USERS_INVALID_PW(false, 2031, "비밀번호를 확인해주세요."),
     USERS_EXISTS_NICKNAME(false, 2032, "중복된 닉네임입니다."),
     INVALID_PHONE_NUMBER(false, 2033, "휴대폰 번호 형식이 올바르지 않습니다."),
@@ -44,7 +44,8 @@ public enum BaseResponseStatus {
     CHATROOM_NOT_SOLD(false, 5002, "상품이 판매되지 않았습니다."),
     CHATROOM_ID_NOT_PROVIDED(false, 5003, "채팅방 ID가 제공되지 않았습니다."),
     GOODS_NOT_FOUND_IN_CHATROOM(false, 5004, "채팅방에서 상품을 찾을 수 없습니다."),
-    DUPLICATE_USER_ID(false, 5005, "DB상에 동일한 userID가 존재합니다.");
+    DUPLICATE_USER_ID(false, 5005, "DB상에 동일한 userID가 존재합니다."),
+    CATEGORY_NOT_FOUND(false, 6000, "해당 카테고리가 존재하지 않습니다.");
 
 
     private final boolean isSuccess;

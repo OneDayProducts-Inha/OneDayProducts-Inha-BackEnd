@@ -52,4 +52,13 @@ public class User extends BaseEntity {
         if (!request.getName().equals(userName)) phoneNum = request.getPhoneNum();
         if (!request.getPhoneNum().equals(pw)) phoneNum = request.getPhoneNum();
     }
+
+    public static int getAmericanAge(LocalDate date) {
+        LocalDate now  = LocalDate.now();
+        int americanAge = now.minusYears(date.getYear()).getYear(); // (1)
+        if (date.plusYears(americanAge).isAfter(now)) {
+            americanAge = americanAge -1;
+        }
+        return americanAge;
+    }
 }

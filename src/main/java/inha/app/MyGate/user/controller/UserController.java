@@ -3,6 +3,7 @@ package inha.app.MyGate.user.controller;
 import inha.app.MyGate.common.Exception.BaseException;
 import inha.app.MyGate.common.Exception.BaseResponse;
 import inha.app.MyGate.common.Exception.BaseResponseStatus;
+import inha.app.MyGate.common.resolver.LoginUser;
 import inha.app.MyGate.user.dto.request.LoginRequest;
 import inha.app.MyGate.user.dto.request.UserInfoRequest;
 import inha.app.MyGate.user.dto.response.JwtResponse;
@@ -10,7 +11,6 @@ import inha.app.MyGate.user.dto.response.UserInfoResponse;
 import inha.app.MyGate.user.entity.User;
 import inha.app.MyGate.user.service.UserService;
 import inha.app.MyGate.utils.JwtService;
-import io.jsonwebtoken.Jwt;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -48,10 +48,9 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다.\n (2014)유저를 찾을 수 없습니다."),
     })
     @GetMapping("/mypage")
-    public BaseResponse<UserInfoResponse> getUserInfo() {
+    public BaseResponse<UserInfoResponse> getUserInfo(@LoginUser User user) {
         try{
-            Long userId = 1L;
-            return new BaseResponse<>(userService.getUserInfo(userId));
+            return new BaseResponse<>(userService.getUserInfo(user));
         }catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
         }

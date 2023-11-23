@@ -1,5 +1,6 @@
 package inha.app.MyGate.community.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import inha.app.MyGate.common.entity.BaseEntity;
 import inha.app.MyGate.community.entity.Community;
 import inha.app.MyGate.user.entity.User;
@@ -17,10 +18,12 @@ public class Comment extends BaseEntity {
     private Long commentId;
     private String content;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "community_id")
     private Community community;
