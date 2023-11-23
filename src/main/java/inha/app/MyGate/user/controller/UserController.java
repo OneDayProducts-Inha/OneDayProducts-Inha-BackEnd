@@ -81,7 +81,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다. \n (2010)유저 아이디 값을 확인해주세요. \n (2030)비밀번호를 입력해주세요. \n (3014)없는 아이디거나 비밀번호가 틀렸습니다."),
     })
-    @GetMapping("/log-in")
+    @PostMapping("/log-in")
     public BaseResponse<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest, HttpSession session) throws BaseException {
         try {
             // null값 체크
