@@ -17,7 +17,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static inha.app.MyGate.common.Exception.BaseResponseStatus.SUCCESS;
 
@@ -74,6 +77,7 @@ public class CommunityController {
         }
     }
     @ResponseBody
+    @Operation(summary = "커뮤니티 글 작성", description = "커뮤니티 글을 작성한다.")
     @PostMapping("/post")
     public BaseResponse<String> createPost(@RequestBody PostReq postReq){
         try{
@@ -83,5 +87,48 @@ public class CommunityController {
         }catch (Exception e){
             return new BaseResponse<>(e.getMessage());
         }
+    }
+
+    @GetMapping("/category/list")
+    @Operation(summary = "커뮤니티 글 카테고리별 list 조회", description = "커뮤니티 글 리스트를 카테고리별로 조회한다.")
+    public BaseResponse<List<CommunityResponse>> getCommCtgList(@RequestParam("category") String category) {
+        try {
+            return new BaseResponse<>(communityService.getCommunityCtgList(category));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/postList")
+    @Operation(summary = "커뮤니티 글 전체 list 조회", description = "커뮤니티 글 리스트를 전체 조회한다.")
+    public BaseResponse<List<CommunityResponse>> getCommList() {
+        try {
+            return new BaseResponse<>(communityService.getCommunityList());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/post/{communityId}")
+    @Operation(summary = "커뮤니티 글 상세보기", description = "커뮤니티 글 정보를 상세 조회한다.")
+    public BaseResponse<CommunityResponse> getPostInfo(@PathVariable(name = "communityId") Long communityId) {
+        try {
+            CommunityResponse communityResponse = communityService.getPostInfo(communityId);
+           return new BaseResponse<>(communityResponse);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/post/search")
+    @Operation(summary = "커뮤니티 글 검색(전체)", description = "커뮤니티에 작성된 전체 글 중 제목에 keword가 포함된 글을 검색한다.")
+    public BaseResponse<List<CommunityResponse>> searchCommunities(@RequestParam String keyword) {
+        return new BaseResponse<>(communityService.searchCommunities(keyword));
+    }
+
+    @GetMapping("/post/search-category")
+    @Operation(summary = "커뮤니티 카테고리별 글 검색", description = "커뮤니티에서 해당 카테고리에 작성된 글 중 제목에 keword가 포함된 글을 검색한다.")
+    public BaseResponse<List<CommunityResponse>> searchCommunitiesByCategoryAndTitle(@RequestParam String category, @RequestParam String keyword) {
+        return new BaseResponse<>(communityService.searchCommunitiesByCategory(category, keyword));
     }
 }

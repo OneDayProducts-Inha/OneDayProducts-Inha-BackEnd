@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static inha.app.MyGate.common.Exception.BaseResponseStatus.*;
@@ -58,5 +59,34 @@ public class CommunityService {
         return new PostRes(community.getTitle(), community.getContent(), community.getCategory());
     }
 
+    public List<CommunityResponse> getCommunityCtgList(String category) throws BaseException {
+        return communityRepository.findByCategoryAndStatus(category, true)
+                .stream().map(CommunityResponse::toDto).collect(Collectors.toList());
+    }
 
+    public List<CommunityResponse> getCommunityList() throws BaseException {
+        return communityRepository.findByStatus(true)
+                .stream().map(CommunityResponse::toDto).collect(Collectors.toList());
+    }
+
+    public CommunityResponse getPostInfo(Long id) throws BaseException {
+        Community community = communityRepository.findByCommunityIdAndStatus(id, true)
+                .orElseThrow(() -> new BaseException(COMMUNITY_ID_NOT_FOUND));
+
+        return CommunityResponse.toDto(community);
+    }
+
+    public List<CommunityResponse> searchCommunities(String keyword) {
+        List<Community> communities = communityRepository.findByTitleContaining(keyword);
+        return communities.stream()
+                .map(CommunityResponse::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<CommunityResponse> searchCommunitiesByCategory(String category, String keyword) {
+        List<Community> communities = communityRepository.findByCategoryContainingAndTitleContaining(category, keyword);
+        return communities.stream()
+                .map(CommunityResponse::toDto)
+                .collect(Collectors.toList());
+    }
 }
