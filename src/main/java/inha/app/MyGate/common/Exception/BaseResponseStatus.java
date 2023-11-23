@@ -21,7 +21,6 @@ public enum BaseResponseStatus {
     COMMUNITY_NOT_FOUND(false, 2020, "커뮤니티 글을 찾을 수 없습니다."),
     POST_USERS_EMPTY_PW(false, 2030, "비밀번호를 입력해주세요."),
     COMMUNITY_ID_NOT_FOUND(false, 2021, "해당하는 ID의 커뮤니티 글을 찾을 수 없습니다."),
-    POST_USERS_EMPTY_PW(false, 2030, "비밀버호를 입력해주세요."),
     POST_USERS_INVALID_PW(false, 2031, "비밀번호를 확인해주세요."),
 
 
