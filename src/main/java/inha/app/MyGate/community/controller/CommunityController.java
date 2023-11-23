@@ -54,10 +54,9 @@ public class CommunityController {
             @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다."),
     })
     @PostMapping("/mycomment")
-    public BaseResponse<List<CommunityResponse>> gerMyComment() {
+    public BaseResponse<List<CommunityResponse>> gerMyComment(@LoginUser User user) {
         try{
-            Long userId = 1L;
-            return new BaseResponse<>(communityService.gerMyComment(userId));
+            return new BaseResponse<>(communityService.gerMyComment(user));
         }catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
         }
@@ -81,9 +80,9 @@ public class CommunityController {
     @ResponseBody
     @Operation(summary = "커뮤니티 글 작성", description = "커뮤니티 글을 작성한다.")
     @PostMapping("/post")
-    public BaseResponse<String> createPost(@RequestBody PostReq postReq){
+    public BaseResponse<String> createPost(@RequestBody PostReq postReq, @LoginUser User user){
         try{
-            PostRes postRes = communityService.createPost(postReq);
+            PostRes postRes = communityService.createPost(postReq,user);
             System.out.println(postRes.toString());
             return new BaseResponse<>(SUCCESS);
         }catch (Exception e){
@@ -93,7 +92,7 @@ public class CommunityController {
 
     @GetMapping("/category/list")
     @Operation(summary = "커뮤니티 글 카테고리별 list 조회", description = "커뮤니티 글 리스트를 카테고리별로 조회한다.")
-    public BaseResponse<List<CommunityResponse>> getCommCtgList(@RequestParam("category") String category) {
+    public BaseResponse<List<CommunityResponse>> getCommCtgList(@RequestParam("category") String category, @LoginUser User user) {
         try {
             return new BaseResponse<>(communityService.getCommunityCtgList(category));
         } catch (Exception e) {
@@ -103,7 +102,7 @@ public class CommunityController {
 
     @GetMapping("/postList")
     @Operation(summary = "커뮤니티 글 전체 list 조회", description = "커뮤니티 글 리스트를 전체 조회한다.")
-    public BaseResponse<List<CommunityResponse>> getCommList() {
+    public BaseResponse<List<CommunityResponse>> getCommList(@LoginUser User user) {
         try {
             return new BaseResponse<>(communityService.getCommunityList());
         } catch (Exception e) {
@@ -113,7 +112,7 @@ public class CommunityController {
 
     @GetMapping("/post/{communityId}")
     @Operation(summary = "커뮤니티 글 상세보기", description = "커뮤니티 글 정보를 상세 조회한다.")
-    public BaseResponse<CommunityRes> getPostInfo(@PathVariable(name = "communityId") Long communityId) {
+    public BaseResponse<CommunityRes> getPostInfo(@PathVariable(name = "communityId") Long communityId, @LoginUser User user) {
         try {
             CommunityRes communityRes = communityService.getPostInfo(communityId);
            return new BaseResponse<>(communityRes);
@@ -124,13 +123,13 @@ public class CommunityController {
 
     @GetMapping("/post/search")
     @Operation(summary = "커뮤니티 글 검색(전체)", description = "커뮤니티에 작성된 전체 글 중 제목에 keword가 포함된 글을 검색한다.")
-    public BaseResponse<List<CommunityResponse>> searchCommunities(@RequestParam String keyword) {
+    public BaseResponse<List<CommunityResponse>> searchCommunities(@RequestParam String keyword, @LoginUser User user) {
         return new BaseResponse<>(communityService.searchCommunities(keyword));
     }
 
     @GetMapping("/post/search-category")
     @Operation(summary = "커뮤니티 카테고리별 글 검색", description = "커뮤니티에서 해당 카테고리에 작성된 글 중 제목에 keword가 포함된 글을 검색한다.")
-    public BaseResponse<List<CommunityResponse>> searchCommunitiesByCategoryAndTitle(@RequestParam String category, @RequestParam String keyword) {
+    public BaseResponse<List<CommunityResponse>> searchCommunitiesByCategoryAndTitle(@RequestParam String category, @RequestParam String keyword, @LoginUser User user) {
         return new BaseResponse<>(communityService.searchCommunitiesByCategory(category, keyword));
     }
 }

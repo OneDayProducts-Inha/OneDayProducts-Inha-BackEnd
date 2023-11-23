@@ -39,8 +39,8 @@ public class CommunityService {
     }
 
     // todo : groupby 해결 필요
-    public List<CommunityResponse> gerMyComment(Long userId) throws BaseException {
-        User user = userRepository.findByUserIdAndStatus(userId, true).orElseThrow(() -> new BaseException(USER_NOT_FOUND));
+    public List<CommunityResponse> gerMyComment(User user1) throws BaseException {
+        User user = userRepository.findByUserIdAndStatus(user1.getUserId(), true).orElseThrow(() -> new BaseException(USER_NOT_FOUND));
         return commentRepository.findByUserAndStatus(user, true)
                 .stream().map(CommunityResponse::toDto).collect(Collectors.toList());
     }
@@ -52,8 +52,8 @@ public class CommunityService {
 
 
     @Transactional
-    public PostRes createPost(PostReq postReq) {
-        Community community = communityRepository.save(postReq.toEntity());
+    public PostRes createPost(PostReq postReq, User user) {
+        Community community = communityRepository.save(postReq.toEntity(user));
         System.out.println(community.isStatus());
         return new PostRes(community.getTitle(), community.getContent(), community.getCategory());
     }
