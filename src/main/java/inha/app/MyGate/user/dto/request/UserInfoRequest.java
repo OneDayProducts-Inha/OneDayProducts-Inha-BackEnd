@@ -21,7 +21,7 @@ public class UserInfoRequest {
     private String pw;
     @Schema(type = "String", description = "휴대폰", example = "010-0000-0000", required = true)
     private String phoneNum;
-    @Schema(type = "String", description = "성별", example = "남성 or 여성", required = true)
+    @Schema(type = "String", description = "성별", example = "남성", required = true, allowableValues = {"여성", "남성"})
     private String gender;
     @Schema(type = "String", description = "주소", example = "인천시 남동구", required = true)
     private String location;
