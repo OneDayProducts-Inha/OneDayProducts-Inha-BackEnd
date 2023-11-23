@@ -1,79 +1,42 @@
 package inha.app.MyGate.utils;
 
 
-import inha.app.MyGate.common.Exception.BaseException;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
+import java.security.Key;
 import java.util.Date;
-
-import static inha.app.MyGate.common.Exception.BaseResponseStatus.EMPTY_JWT;
-import static inha.app.MyGate.common.Exception.BaseResponseStatus.INVALID_JWT;
 
 
 @Service
 public class JwtService {
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 14;    // 2주
+    private Key key;
+    public JwtService(@Value("${jwt.secret}") String secretKey) {
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        this.key = Keys.hmacShaKeyFor(keyBytes);
+    }
 
-    /*
-    JWT 생성
-    @param userIdx
-    @return String
-     */
     public String createJwt(Long id){
-        Date now = new Date();
+        long now = (new Date()).getTime();
         return Jwts.builder()
-                .setHeaderParam("type","jwt")
-                .claim("id",id)
-                .setIssuedAt(now)
-                .setExpiration(new Date(System.currentTimeMillis()+1*(1000*60*60*24*365)))
-                .signWith(SignatureAlgorithm.HS256, Secret.JWT_SECRET_KEY)
+                .setSubject(id.toString())       // payload "sub": "name"
+                .claim("userIdx", id)        // payload "auth": "ROLE_USER"
+                .setExpiration(new Date(now + ACCESS_TOKEN_EXPIRE_TIME))        // payload "exp": 1516239022 (예시)
+                .signWith(key, SignatureAlgorithm.HS256)    // header "alg": "HS512"
                 .compact();
     }
 
-    /*
-    Header에서 X-ACCESS-TOKEN 으로 JWT 추출
-    @return String
-     */
-    public String getJwt(){
-        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
-        return request.getHeader("X-ACCESS-TOKEN");
-    }
 
-    /*
-    JWT에서 userIdx 추출
-    @return int
-    @throws BaseException
-     */
-    public Long getId() throws BaseException {
-        //1. JWT 추출
-        String accessToken = getJwt();
-        if(accessToken == null || accessToken.length() == 0){
-            throw new BaseException(EMPTY_JWT);
-        }
-
-        // 2. JWT parsing
-        Jws<Claims> claims;
-        try{
-            claims = Jwts.parser()
-                    .setSigningKey(Secret.JWT_SECRET_KEY)
-                    .parseClaimsJws(accessToken);
-        } catch (Exception ignored) {
-            throw new BaseException(INVALID_JWT);
-        }
-
-        // 3. userIdx 추출
-        return claims.getBody().get("id",Long.class);
-    }
-
-    public String getPhoneNumFromToken(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(Secret.JWT_SECRET_KEY)
+    public String getUserIdFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
 
@@ -82,7 +45,7 @@ public class JwtService {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(Secret.JWT_SECRET_KEY).parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getExpiration();
             return true;
         } catch (Exception e) {
             return false;

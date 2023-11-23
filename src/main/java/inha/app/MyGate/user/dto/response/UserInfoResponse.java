@@ -18,8 +18,8 @@ public class UserInfoResponse {
     public static UserInfoResponse toDto(User user){
         return UserInfoResponse.builder()
                 .id(user.getUserId())
-                .name(user.getName())
-                .phoneNum(user.getPhone_num())
+                .name(user.getUserName())
+                .phoneNum(user.getPhoneNum())
                 .build();
     }
 }

@@ -16,25 +16,23 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(name = "userName")
-    private String name;
+    private String userName;
 
-    @Column(name = "phone_num")
-    private String phone_num;
+    private String phoneNum;
 
     private String pw;
 
 
     @Builder
     public User(String name, String phone_num, String pw, boolean status) {
-        this.name = name;
-        this.phone_num = phone_num;
+        this.userName = name;
+        this.phoneNum = phone_num;
         this.pw = pw;
     }
 
     public void updateUser(UserInfoRequest request) {
-        if (!request.getPhoneNum().equals(phone_num)) phone_num = request.getPhoneNum();
-        if (!request.getName().equals(name)) phone_num = request.getPhoneNum();
-        if (!request.getPhoneNum().equals(pw)) phone_num = request.getPhoneNum();
+        if (!request.getPhoneNum().equals(phoneNum)) phoneNum = request.getPhoneNum();
+        if (!request.getName().equals(userName)) phoneNum = request.getPhoneNum();
+        if (!request.getPhoneNum().equals(pw)) phoneNum = request.getPhoneNum();
     }
 }

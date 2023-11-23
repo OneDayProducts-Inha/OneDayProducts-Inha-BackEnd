@@ -1,4 +1,4 @@
-package inha.app.MyGate.common.config;
+package inha.app.MyGate.common.resolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

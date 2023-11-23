@@ -9,7 +9,6 @@ import inha.app.MyGate.user.dto.response.UserInfoResponse;
 import inha.app.MyGate.user.entity.User;
 import inha.app.MyGate.user.repository.UserRepository;
 import inha.app.MyGate.utils.JwtService;
-import inha.app.MyGate.utils.SHA256;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
@@ -26,12 +25,12 @@ import static inha.app.MyGate.common.Exception.BaseResponseStatus.*;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
     @Transactional
     public SignUpResponse createUser(UserInfoRequest request) throws BaseException {
         User newUser = userRepository.save(request.toEntity());
-        return new SignUpResponse(newUser.getUserId(), newUser.getName(), newUser.getPhone_num());
+        return new SignUpResponse(newUser.getUserId(), newUser.getUserName(), newUser.getPhoneNum());
     }
 
     // 사용자 정보 조회
@@ -49,21 +48,24 @@ public class UserService {
 
     // Login
     public LoginResponse loginUser(LoginRequest loginRequest) throws BaseException{
-        User user = userRepository.findUserByPhoneNum(loginRequest.getPhoneNum());
-        String encryptPw;
-        try {
-            encryptPw = new SHA256().encrypt(loginRequest.getPw());
-        } catch (Exception ignored) {
-            throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
-        }
+        User user = userRepository.findByPhoneNumAndStatus(loginRequest.getPhoneNum(), true).orElseThrow(() -> new BaseException(USER_NOT_FOUND));
+        //  비밀번호 맞는지 확인
 
-        String originalEncryptPw = new SHA256().encrypt(user.getPw());
-        if (originalEncryptPw.equals(encryptPw)) {
-            String jwt = jwtService.createJwt(user.getUserId());
-            return new LoginResponse(user.getUserId(), user.getName(), user.getPhone_num(), jwt); // 바꿀예정
-        } else {
-            throw new BaseException(FAILED_TO_LOGIN);
-        }
+        // 토큰 생성
+        return new LoginResponse(jwtService.createJwt(user.getUserId()));
+//        try {
+//            encryptPw = new SHA256().encrypt(loginRequest.getPw());
+//        } catch (Exception ignored) {
+//            throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
+//        }
+//
+//        String originalEncryptPw = new SHA256().encrypt(user.getPw());
+//        if (originalEncryptPw.equals(encryptPw)) {
+//            String jwt = jwtService.createJwt(user.getUserId());
+//            return new LoginResponse(user.getUserId(), user.getUserName(), user.getPhoneNum(), jwt); // 바꿀예정
+//        } else {
+//            throw new BaseException(FAILED_TO_LOGIN);
+//        }
 
 
     }

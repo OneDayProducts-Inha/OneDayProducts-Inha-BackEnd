@@ -3,8 +3,7 @@ package inha.app.MyGate.user.controller;
 import inha.app.MyGate.common.Exception.BaseException;
 import inha.app.MyGate.common.Exception.BaseResponse;
 import inha.app.MyGate.common.Exception.BaseResponseStatus;
-import inha.app.MyGate.common.config.LoginUser;
-import inha.app.MyGate.common.config.SessionConst;
+import inha.app.MyGate.common.resolver.LoginUser;
 import inha.app.MyGate.user.dto.request.LoginRequest;
 import inha.app.MyGate.user.dto.request.UserInfoRequest;
 import inha.app.MyGate.user.dto.response.LoginResponse;
@@ -82,27 +81,27 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다. \n (2010)유저 아이디 값을 확인해주세요. \n (2030)비밀번호를 입력해주세요. \n (3014)없는 아이디거나 비밀번호가 틀렸습니다."),
     })
     @GetMapping("/log-in")
-    public BaseResponse<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest, HttpSession session) throws BaseException {
+    public BaseResponse<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) throws BaseException {
         try {
-            // null값 체크
-            if (loginRequest.getPhoneNum() == null) {
-                return new BaseResponse<>(USERS_EMPTY_USER_ID);
-
-            }
-            if (loginRequest.getPw() == null) {
-                return new BaseResponse<>(POST_USERS_EMPTY_PW);
-            }
-
-            LoginResponse res = userService.loginUser(loginRequest);
-
-
-            User loggedInUser = null;
-            loggedInUser.setUserId(res.getId());
-            loggedInUser.setName(res.getName());
-            loggedInUser.setPhone_num(res.getPhoneNum());
-
-            session.setAttribute(SessionConst.LOGIN_USER, loggedInUser);
-            return new BaseResponse<>(res);
+            // stringUtils.hasText -> true, false
+//            // null값 체크
+//            if (loginRequest.getPhoneNum() == null) {
+//                return new BaseResponse<>(USERS_EMPTY_USER_ID);
+//
+//            }
+//            if (loginRequest.getPw() == null) {
+//                return new BaseResponse<>(POST_USERS_EMPTY_PW);
+//            }
+//
+//            LoginResponse res = userService.loginUser(loginRequest);
+//
+//
+//            User loggedInUser = null;
+//            loggedInUser.setUserId(res.getId());
+//            loggedInUser.setUserName(res.getName());
+//            loggedInUser.setPhoneNum(res.getPhoneNum());
+//            return new BaseResponse<>(res);
+            return new BaseResponse<>(this.userService.loginUser(loginRequest));
 
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
