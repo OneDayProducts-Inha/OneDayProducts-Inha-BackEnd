@@ -9,6 +9,7 @@ import inha.app.MyGate.community.dto.request.PostReq;
 import inha.app.MyGate.community.dto.response.CommunityRes;
 import inha.app.MyGate.community.dto.response.CommunityResponse;
 import inha.app.MyGate.community.dto.response.PostRes;
+import inha.app.MyGate.community.entity.Category;
 import inha.app.MyGate.community.service.CommunityService;
 import inha.app.MyGate.user.entity.User;
 import io.swagger.annotations.Api;
@@ -127,9 +128,9 @@ public class CommunityController {
         return new BaseResponse<>(communityService.searchCommunities(keyword));
     }
 
-    @GetMapping("/post/search-category")
-    @Operation(summary = "커뮤니티 카테고리별 글 검색", description = "커뮤니티에서 해당 카테고리에 작성된 글 중 제목에 keword가 포함된 글을 검색한다.")
-    public BaseResponse<List<CommunityResponse>> searchCommunitiesByCategoryAndTitle(@RequestParam String category, @RequestParam String keyword, @LoginUser User user) {
-        return new BaseResponse<>(communityService.searchCommunitiesByCategory(category, keyword));
-    }
+//    @GetMapping("/post/search-category")
+//    @Operation(summary = "커뮤니티 카테고리별 글 검색", description = "커뮤니티에서 해당 카테고리에 작성된 글 중 제목에 keword가 포함된 글을 검색한다.")
+//    public BaseResponse<List<CommunityResponse>> searchCommunitiesByCategoryAndTitle(@RequestParam String category, @RequestParam String keyword, @LoginUser User user) throws BaseException{
+//        return new BaseResponse<>(communityService.searchCommunitiesByCategory(category, keyword));
+//    }
 }

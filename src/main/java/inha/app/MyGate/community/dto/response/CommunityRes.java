@@ -26,7 +26,7 @@ public class CommunityRes {
                 .communityId(community.getCommunityId())
                 .title(community.getTitle())
                 .content(community.getContent())
-                .category(community.getCategory())
+                .category(community.getCategory().getValue())
                 .commentList(community.getComments()!= null ? community.getComments() : Collections.emptyList())
                 .build();
     }

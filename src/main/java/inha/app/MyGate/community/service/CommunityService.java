@@ -6,6 +6,7 @@ import inha.app.MyGate.community.dto.request.PostReq;
 import inha.app.MyGate.community.dto.response.CommunityRes;
 import inha.app.MyGate.community.dto.response.CommunityResponse;
 import inha.app.MyGate.community.dto.response.PostRes;
+import inha.app.MyGate.community.entity.Category;
 import inha.app.MyGate.community.entity.Comment;
 import inha.app.MyGate.community.entity.Community;
 import inha.app.MyGate.community.repository.CommentRepository;
@@ -52,14 +53,14 @@ public class CommunityService {
 
 
     @Transactional
-    public PostRes createPost(PostReq postReq, User user) {
+    public PostRes createPost(PostReq postReq, User user) throws BaseException{
         Community community = communityRepository.save(postReq.toEntity(user));
         System.out.println(community.isStatus());
-        return new PostRes(community.getTitle(), community.getContent(), community.getCategory());
+        return new PostRes(community.getTitle(), community.getContent(), community.getCategory().getValue());
     }
 
     public List<CommunityResponse> getCommunityCtgList(String category) throws BaseException {
-        return communityRepository.findByCategoryAndStatus(category, true)
+        return communityRepository.findByCategoryAndStatus(Category.getCategoryByValue(category), true)
                 .stream().map(CommunityResponse::toDto).collect(Collectors.toList());
     }
 
@@ -82,10 +83,16 @@ public class CommunityService {
                 .collect(Collectors.toList());
     }
 
-    public List<CommunityResponse> searchCommunitiesByCategory(String category, String keyword) {
-        List<Community> communities = communityRepository.findByCategoryContainingAndTitleContaining(category, keyword);
-        return communities.stream()
-                .map(CommunityResponse::toDto)
-                .collect(Collectors.toList());
-    }
+//    public List<CommunityResponse> searchCommunitiesByCategory(String category, String keyword) throws BaseException{
+//        // category and keyword is null
+//        // category is null
+//
+//        // keyword is null
+//
+//        // category and keyword is not null
+//        List<Community> communities = communityRepository.findByCategoryContainingAndTitleContaining(Category.getCategoryByValue(category), keyword);
+//        return communities.stream()
+//                .map(CommunityResponse::toDto)
+//                .collect(Collectors.toList());
+//    }
 }
