@@ -9,7 +9,6 @@ public enum BaseResponseStatus {
     USERS_EMPTY_USER_ID(false, 2010, "유저 아이디 값을 확인해주세요."),
     USERS_EXISTS_USER_ID(false, 2011, "중복된 아이디입니다."),
     USERS_EXISTS_PHONE_NUM(false, 2012, "중복된 핸드폰 번호입니다."),
-    USERS_EXISTS_NICKNAME(false, 2012, "중복된 닉네임입니다."),
     USERS_FAILED_TO_SIGN_UP(false, 2013, "회원 가입에 실패하였습니다."),
     USER_NOT_FOUND(false, 2014, "유저를 찾을 수 없습니다."),
 
@@ -23,6 +22,9 @@ public enum BaseResponseStatus {
     POST_USERS_EMPTY_PW(false, 2030, "비밀번호를 입력해주세요."),
     COMMUNITY_ID_NOT_FOUND(false, 2021, "해당하는 ID의 커뮤니티 글을 찾을 수 없습니다."),
     POST_USERS_INVALID_PW(false, 2031, "비밀번호를 확인해주세요."),
+    USERS_EXISTS_NICKNAME(false, 2032, "중복된 닉네임입니다."),
+    INVALID_PHONE_NUMBER(false, 2033, "휴대폰 번호 형식이 올바르지 않습니다."),
+    INVALID_GENDER(false, 2034, "성별 형식이 올바르지 않습니다."),
 
 
     RESPONSE_ERROR(false, 3000, "값을 불러오는데 실패하였습니다."),
