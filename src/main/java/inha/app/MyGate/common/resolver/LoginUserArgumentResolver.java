@@ -1,11 +1,9 @@
 package inha.app.MyGate.common.resolver;
 
 import inha.app.MyGate.common.Exception.BaseException;
-import inha.app.MyGate.common.Exception.BaseResponseStatus;
 import inha.app.MyGate.user.entity.User;
 import inha.app.MyGate.user.repository.UserRepository;
 import inha.app.MyGate.utils.JwtService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
@@ -18,13 +16,14 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import javax.servlet.http.HttpServletRequest;
 
 import static inha.app.MyGate.common.Exception.BaseResponseStatus.INVALID_JWT;
+import static inha.app.MyGate.common.Exception.BaseResponseStatus.USER_NOT_FOUND;
 
 @Slf4j
 @RequiredArgsConstructor
 @Component
 public class LoginUserArgumentResolver  implements HandlerMethodArgumentResolver {
-    private JwtService jwtTokenProvider;
-    private UserRepository userRepository;
+    private final JwtService jwtTokenProvider;
+    private final UserRepository userRepository;
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         log.info("supportParameter 실행");
@@ -38,12 +37,13 @@ public class LoginUserArgumentResolver  implements HandlerMethodArgumentResolver
         log.info("resolveArgument 실행");
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         String token = extractJwtToken(request);
-        if (token == null || !jwtTokenProvider.validateToken(token)) {
+        System.out.println(token);
+        if (!jwtTokenProvider.validateToken(token)) {
             throw new BaseException(INVALID_JWT);
         }
         String id = jwtTokenProvider.getUserIdFromToken(token);
         try{
-            return userRepository.findByUserIdAndStatus(Long.valueOf(id), true).orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NOT_FOUND));
+            return userRepository.findByUserIdAndStatus(Long.valueOf(id), true).orElseThrow(() -> new BaseException(USER_NOT_FOUND));
         }catch (NumberFormatException e){
             throw new BaseException(INVALID_JWT);
         }
