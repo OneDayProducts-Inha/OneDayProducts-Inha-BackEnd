@@ -19,8 +19,8 @@ public class UserInfoRequest {
 
     public User toEntity(){
         return User.builder()
-                .name(name)
-                .phone_num(phoneNum)
+                .userName(name)
+                .phoneNum(phoneNum)
                 .pw(pw)
                 .build();
     }

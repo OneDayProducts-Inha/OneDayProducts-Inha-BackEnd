@@ -17,7 +17,7 @@ public class LoginRequest {
 
     public User toLogin(){
         return User.builder()
-                .phone_num(phoneNum)
+                .phoneNum(phoneNum)
                 .pw(pw)
                 .build();
     }
