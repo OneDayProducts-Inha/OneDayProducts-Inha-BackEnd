@@ -30,7 +30,7 @@ public class UserController {
     // 회원가입
     @Operation(summary = "회원가입", description = "휴대폰번호, 닉네임, 비밀번호, 위치, 프로필이미지, 성별, 생년월일로 회원가입한다. ")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다. \n (2012) 중복된 핸드폰 번호입니다."),
+            @ApiResponse(responseCode = "200", description = "(1000)요청에 성공했습니다. \n (2012) 중복된 핸드폰 번호입니다. \n (2032) 중복된 닉네임입니다. \n (2033) 휴대폰 번호 형식이 올바르지 않습니다. \n (2034) 성별 형식이 올바르지 않습니다."),
     })
     @PostMapping("/sign-up")
     public BaseResponse<JwtResponse> createUser(@RequestBody UserInfoRequest request) {

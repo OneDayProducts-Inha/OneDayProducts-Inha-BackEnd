@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static inha.app.MyGate.common.Exception.BaseResponseStatus.*;
 
@@ -28,15 +30,20 @@ import static inha.app.MyGate.common.Exception.BaseResponseStatus.*;
 public class UserService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private static final String PHONE_NUMBER_REGEX = "^010-[0-9]{4}-[0-9]{4}$";
 
     @Transactional
     public JwtResponse createUser(UserInfoRequest request) throws BaseException {
-        // 이미 있는 휴대폰 번호면 예외처리
-        Optional<User> existUser = userRepository.existsByPhoneNum(request.getPhoneNum());
-        if(existUser != null){
-            throw new BaseException(USERS_EXISTS_PHONE_NUM);
-        }
-        User user = User.toEntity(request);
+        // 중복된 휴대폰 번호 체크
+        if(userRepository.existsByPhoneNum(request.getPhoneNum())) throw new BaseException(USERS_EXISTS_PHONE_NUM);
+
+        // 휴대폰 번호 형식인지 체크
+        if(!isValidPhoneNumber(request.getPhoneNum())) throw new BaseException(INVALID_PHONE_NUMBER);
+
+        // 중복된 닉네임 체크
+        if(userRepository.existsByUserName(request.getName())) throw new BaseException(USERS_EXISTS_NICKNAME);
+        Gender gender = Gender.getGenderByValue(request.getGender());
+        User user = User.toEntity(request, gender);
         userRepository.save(user);
         System.out.println("Gender: " + user.getGender());
         return new JwtResponse(jwtService.createJwt(user.getUserId()));
@@ -64,5 +71,12 @@ public class UserService {
         }
         // 토큰 생성
         return new JwtResponse(jwtService.createJwt(user.getUserId()));
+    }
+
+    // 전화번호가 010-0000-0000 형식인지 체크
+    public static boolean isValidPhoneNumber(String phoneNumber) {
+        Pattern pattern = Pattern.compile(PHONE_NUMBER_REGEX);
+        Matcher matcher = pattern.matcher(phoneNumber);
+        return matcher.matches();
     }
 }
