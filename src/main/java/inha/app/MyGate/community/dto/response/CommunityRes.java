@@ -19,6 +19,7 @@ public class CommunityRes {
     private String title;
     private String content;
     private String category;
+    private String name;
     private List<Comment> commentList;
 
     public static CommunityRes toDto(Community community){
@@ -27,6 +28,7 @@ public class CommunityRes {
                 .title(community.getTitle())
                 .content(community.getContent())
                 .category(community.getCategory().getValue())
+                .name(community.getUser().getUserName())
                 .commentList(community.getComments()!= null ? community.getComments() : Collections.emptyList())
                 .build();
     }

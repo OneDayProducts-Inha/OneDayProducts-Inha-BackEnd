@@ -19,6 +19,7 @@ public class CommunityResponse {
     private String content;
     @Schema(type = "String", description = "카테고리", example = "취미", required = true)
     private String category;
+    private String name;
 
     public static CommunityResponse toDto(Community community){
         return CommunityResponse.builder()
@@ -26,6 +27,7 @@ public class CommunityResponse {
                 .title(community.getTitle())
                 .content(community.getContent())
                 .category(community.getCategory().getValue())
+                .name(community.getUser().getUserName())
                 .build();
     }
 
@@ -35,6 +37,7 @@ public class CommunityResponse {
                 .title(comment.getCommunity().getTitle())
                 .content(comment.getCommunity().getContent())
                 .category(comment.getCommunity().getCategory().getValue())
+                .name(comment.getUser().getUserName())
                 .build();
     }
 }
